@@ -26,6 +26,7 @@ d3.csv('data/disasters.csv')
   		let cost = d3.sum(justThisYear, d => d.cost); //sum over the filtered array, for the cost field
 
   		costsPerYear.push( {"year": i, "cost":cost});
+		console.log("costsPerYear filled");
 
   	}
 
@@ -46,7 +47,7 @@ d3.csv('data/disasters.csv')
 
 })
 .catch(error => {
-    console.error('Error loading the data');
+    console.error('Error loading the data', error);
 });
 
 
