@@ -89,8 +89,7 @@ class TimelineCircles {
      //  if some elements have been removed or added, we need to use 'join' rather than enter and append
       vis.circles = vis.chart.selectAll('circle')
           .data(vis.data)
-          .enter()
-          .append('circle')
+          .join('circle') //filter functinality
          .attr('fill', (d) => vis.colorPalette(d.category) )
           .attr('opacity', .8)
           .attr('stroke', "gray")
