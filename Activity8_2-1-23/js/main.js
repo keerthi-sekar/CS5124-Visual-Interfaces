@@ -1,5 +1,7 @@
 console.log("Hello world");
-let data, timelineCircles;
+const parseTime = d3.timeParse("%Y-%m-%d");
+
+let data, data1, timelineCircles, lineChart;
 
 d3.csv('data/disasters.csv')
   .then(_data => {
@@ -23,12 +25,40 @@ d3.csv('data/disasters.csv')
 			'containerHeight': 1100,
 			'containerWidth': 1000
 		}, data);
-
 })
 .catch(error => {
     console.error('Error loading the data');
 });
 
+d3.csv('data/sp_500_index.csv')
+  .then(_data => {
+    _data.forEach(d => {
+      d.close = parseFloat(d.close);  // Convert string to float
+      d.date = parseTime(d.date);     // Convert string to date object
+    });
+
+    data1 = _data;
+    
+    // Initialize and render chart
+    lineChart = new LineChart({ parentElement: '#linechart'}, data1);
+    lineChart.updateVis();
+  })
+  .catch(error => console.error(error));
+
+/**
+ * Input field event listener
+ */
+d3.select('#start-year-input').on('change', function() {
+  // Get selected year
+  const minYear = parseInt(d3.select(this).property('value'));
+
+  // Filter dataset accordingly
+  let filteredData = data1.filter(d => d.date.getFullYear() >= minYear);
+
+  // Update chart
+  lineChart.data1 = filteredData;
+  lineChart.updateVis();
+});
 
 /**
  * Event listener: use color legend as filter
