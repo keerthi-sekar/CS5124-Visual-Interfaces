@@ -21,13 +21,16 @@
       </div>
       
       <div class="row">
-        <div class="leftcolumn">
+        <div class="leftcolumn" style="width: 1300px;">
           <div class="card">
             <h2>Data Visualization 1</h2>
             <h5>Title description, Dec 7, 2017</h5>
-            <div class="fakeimg" style="height:200px;">Image</div>
-            <p>Some text..</p>
-            <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+            <input type="file" id="file_upload" />
+            <button onclick="GenerateTable()">GenerateTable</button>  
+            <br>
+            <br>
+            <!-- table to display the csv data -->
+            <table id="display_csv_data"></table>
           </div>
         </div>
  
@@ -37,9 +40,7 @@
     <script src="js/d3.v6.min.js"></script>
 
     <!-- Our JS code - INCLUDING the new files-->
-    <script src="js/main.js"></script>
-
-
+    <script src="js/searchLibrary.js"></script>
 
 </body>
 </html>

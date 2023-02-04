@@ -1,132 +1,120 @@
 console.log("Hello world");
 
-d3.csv('data/disasters.csv')
-  .then(data => {
-  	console.log('Data loading complete. Work with dataset.');
-    console.log(data);
+let barchartA, data;
+//pl_name,hostname,sys_name,sy_snum,sy_pnum,discoverymethod,disc_year,pl_orbsmax,pl_rade,pl_bmasse,pl_orbeccen,st_spectype,st_rad,st_mass,sy_dist,disc_facility
+d3.csv('data/clean-exoplanets.csv')
+	.then(_data => {
+		data = _data;
+	  	console.log(data);
 
-    //process the data - this is a forEach function.  You could also do a regular for loop.... 
-    data.forEach(d => { //ARROW function - for each object in the array, pass it as a parameter to this function
-      	d.cost = +d.cost; // convert string 'cost' to number
-      	d.daysFromYrStart = computeDays(d.start); //note- I just created this field in each object in the array on the fly
-
-				let tokens = d.start.split("-");
-  			d.year = +tokens[0];
-
-  	});
-
-    //lets compute costs per year for the line chart
-  	let minYear = d3.min( data, d => d.year);
-  	let maxYear = d3.max( data, d=> d.year );
-
-  	let costsPerYear = []; //this will be our data for the line chart
-  	for(let i = minYear; i < maxYear; i++){
-
-  		let justThisYear = data.filter( d => d.year == i ); //only include the selected year
-  		let cost = d3.sum(justThisYear, d => d.cost); //sum over the filtered array, for the cost field
-
-  		costsPerYear.push( {"year": i, "cost":cost});
-		console.log("costsPerYear filled");
-
-  	}
-
-
-  	// Create an instance (for example in main.js)
-		let timelineCircles = new TimelineCircles({
-			'parentElement': '#timeline',
-			'containerHeight': 1100,
-			'containerWidth': 1000
+		data.forEach(d => {
+			d.pl_name = +d.pl_name;
+			d.hostname = +d.hostname;
+			d.sys_name = +d.sys_name;
+			d.sy_snum = +d.sy_snum;
+			d.sypnum = +d.sypnum;
+			d.discoverymethod = +d.discoverymethod;
+			d.disc_year = +d.disc_year;
+			d.pl_orbsmax = +d.pl_orbsmax;
+			d.pl_rade = +d.pl_rade;
+			d.pl_bmasse = +d.pl_bmasse;
+			d.pl_orbecce = +d.pl_orbecce;
+			d.st_spectype = +d.st_spectype;
+			d.st_rad = +d.st_rad;
+			d.st_mass = +d.st_mass;
+			d.sy_dist = +d.sy_dist;
+			d.disc_facility = +d.disc_facility;
+		});
+		console.log('Data loading complete. Work with dataset.');
+		// Initialize chart and then show it
+		//barchartA = new Barchart({ parentElement: '#barchartA'}, data);
+		barchartA = new Barchart({
+			'parentElement': '#barchartA',
+			'containerHeight': 200,
+			'containerWidth': 550
 		}, data);
+		//barchartA.updateVis();
+	})
+	.catch(error => console.error(error));
 
-
-		let lineChart = new Line({
-			'parentElement': '#line',
-			'containerHeight': 100,
-			'containerWidth': 1000
-			}, costsPerYear); 
-
+d3.select('#sorting').on('click', d => {
+	barchart.config.reverseOrder = true;
+	barchart.updateVis();
 })
-.catch(error => {
-    console.error('Error loading the data', error);
-});
 
-
-/// OLD VERSION.... 
-// function drawChart(data){
-
-// 	console.log("Let's draw a chart!!");
-	
-
-// 	// Margin object with properties for the four directions
-// 	const margin = {top: 40, right: 50, bottom: 10, left: 50};
-
-// 	// Width and height as the inner dimensions of the chart area
-// 	const width = 1000 - margin.left - margin.right;
-// 	const height = 1100 - margin.top - margin.bottom;
-
-// 	// Define 'svg' as a child-element (g) from the drawing area and include spaces
-// 	// Add <svg> element (drawing space)
-// 	const svg = d3.select('body').append('svg')
-// 	    .attr('width', width + margin.left + margin.right)
-// 	    .attr('height', height + margin.top + margin.bottom)
-// 	    .append('g')
-// 	    .attr('transform', `translate(${margin.left}, ${margin.top})`);
-
-// 	// Initialize linear and ordinal scales (input domain and output range)
-// 	const xScale = d3.scaleLinear()
-// 		.domain([0, 365])
-// 		.range([0, width]);
-
-// 	console.log(d3.min(data, d => d.year) );
-
-// 	const yScale = d3.scaleLinear()
-// 		.domain([d3.max(data, d => d.year), d3.min( data, d => d.year)]) 
-// 		.range([0, height]);
-
-// 	const rScale = d3.scaleLinear()
-// 		.domain(d3.extent(data, d=> d.cost))
-// 		.range([5, 100]);
-
-// 	// Construct a new ordinal scale with a range of ten categorical colours
-// 	let colorPalette = d3.scaleOrdinal(d3.schemeTableau10)
-// 	colorPalette.domain( "tropical-cyclone", "drought-wildfire", "severe-storm", "flooding" );
-
-// 		// Initialize axes
-// 		const xAxis = d3.axisTop(xScale);
-// 		const yAxis = d3.axisLeft(yScale);
-
-// 		// Draw the axis
-// 		const xAxisGroup = svg.append('g')
-// 		  .attr('class', 'axis x-axis') 
-// 		  .call(xAxis);
-
-// 		const yAxisGroup = svg.append('g')
-// 		  .attr('class', 'axis y-axis')
-// 		  .call(yAxis);
-
-// 		//Add circles for each event in the data
-// 	svg.selectAll('circle')
-// 	    .data(data)
-// 	    .enter()
-// 	  .append('circle')
-// 	  	.attr('fill', (d) => colorPalette(d.category) )
-// 	    .attr('opacity', .8)
-// 	    .attr('stroke', "gray")
-// 	    .attr('stroke-width', 2)
-// 	    .attr('r', (d) => rScale(d.cost) ) 
-// 	    .attr('cy', (d) => yScale(d.year) ) 
-// 	    .attr('cx',(d) =>  xScale(d.daysFromYrStart) );
-
-
-// }
-
-function computeDays(disasterDate){
-  	let tokens = disasterDate.split("-");
-
-  	let year = +tokens[0];
-  	let month = +tokens[1];
-  	let day = +tokens[2];
-
-    return (Date.UTC(year, month-1, day) - Date.UTC(year, 0, 0)) / 24 / 60 / 60 / 1000 ;
-
+function GenerateTable() {
+	var filename = 'clean-exoplanets.csv';
+	var extension = filename.substring(filename.lastIndexOf(".")).toUpperCase();
+	if (extension == '.CSV') {
+		//Here calling another method to read CSV file into json
+		csvFileToJSON(filename);
+	}else{
+		alert("Please select a valid csv file.");
+	}
   }
+
+function csvFileToJSON(file){
+	try {
+	  var reader = new FileReader();
+	  reader.readAsBinaryString(file);
+	  reader.onload = function(e) {
+		  var jsonData = [];
+		  var headers = [];
+		  var rows = e.target.result.split("\r\n");               
+		  for (var i = 0; i < rows.length; i++) {
+			  var cells = rows[i].split(",");
+			  var rowData = {};
+			  for(var j=0;j<cells.length;j++){
+				  if(i==0){
+					  var headerName = cells[j].trim();
+					  headers.push(headerName);
+				  }else{
+					  var key = headers[j];
+					  if(key){
+						  rowData[key] = cells[j].trim();
+					  }
+				  }
+			  }
+			   
+			  if(i!=0){
+				  jsonData.push(rowData);
+			  }
+		  }
+			
+		  //displaying the json result into HTML table
+		  displayJsonToHtmlTable(jsonData);
+		  }
+	  }catch(e){
+		  console.error(e);
+	  }
+}
+
+function displayJsonToHtmlTable(jsonData)
+{
+	console.log("populate");
+	var table=document.getElementById("display_data");
+        if(jsonData.length>0){
+            var headers = Object.keys(jsonData[0]);
+            var htmlHeader='<thead><tr>';
+             
+            for(var i=0;i<headers.length;i++){
+                htmlHeader+= '<th>'+headers[i]+'</th>';
+            }
+            htmlHeader+= '<tr></thead>';
+             
+            var htmlBody = '<tbody>';
+            for(var i=0;i<jsonData.length;i++){
+                var row=jsonData[i];
+                htmlBody+='<tr>';
+                for(var j=0;j<headers.length;j++){
+                    var key = headers[j];
+                    htmlBody+='<td>'+row[key]+'</td>';
+                }
+                htmlBody+='</tr>';
+            }
+            htmlBody+='</tbody>';
+            table.innerHTML=htmlHeader+htmlBody;
+        }else{
+            table.innerHTML='There is no data in CSV';
+        }
+}
