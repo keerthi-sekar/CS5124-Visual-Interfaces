@@ -2,7 +2,7 @@ console.log("Hello world");
 
 let barchartA, data;
 //pl_name,hostname,sys_name,sy_snum,sy_pnum,discoverymethod,disc_year,pl_orbsmax,pl_rade,pl_bmasse,pl_orbeccen,st_spectype,st_rad,st_mass,sy_dist,disc_facility
-d3.csv('data/clean-exoplanets.csv')
+d3.csv('data/exoplanets-label-blanks.csv')
 	.then(_data => {
 		data = _data;
 	  	console.log(data);
@@ -27,12 +27,15 @@ d3.csv('data/clean-exoplanets.csv')
 		});
 		console.log('Data loading complete. Work with dataset.');
 		// Initialize chart and then show it
+		const colorScale = d3.scaleOrdinal()
+        .range(['#d3eecd', '#7bc77e', '#2a8d46']) // light green to dark green
+        .domain(['Easy','Intermediate','Difficult']);
 		//barchartA = new Barchart({ parentElement: '#barchartA'}, data);
 		barchartA = new Barchart({
-			'parentElement': '#barchartA',
-			'containerHeight': 200,
-			'containerWidth': 550
-		}, data);
+			parentElement: '#barchartA',
+			colorScale: colorScale
+		  }, data);
+		  barchartA.updateVis();
 		//barchartA.updateVis();
 	})
 	.catch(error => console.error(error));
