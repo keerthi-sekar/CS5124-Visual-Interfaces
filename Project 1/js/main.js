@@ -46,9 +46,10 @@ d3.csv('data/cleaned-exoplanets.csv')
 	.catch(error => console.error(error));
 
 d3.select('#sorting').on('click', d => {
-	barchart.config.reverseOrder = true;
-	barchart.updateVis();
+	barchartA.config.reverseOrder = true;
+	barchartA.updateVis();
 })
+
 
 function GenerateTable() {
 	var filename = 'clean-exoplanets.csv';

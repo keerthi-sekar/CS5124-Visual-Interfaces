@@ -13,6 +13,8 @@ class Barchart {
       containerWidth: _config.containerWidth || 550,
       containerHeight: _config.containerHeight || 300,
       margin: _config.margin || {top: 5, right: 2, bottom: 5, left: 2},
+      reverseOrder: _config.reverseOrder || false,
+      tooltipPadding: _config.tooltipPadding || 15
     }
     this.data = _data;
     this.initVis();
@@ -70,12 +72,20 @@ class Barchart {
         .attr('class', 'axis y-axis');
 
     // Append axis title
-    vis.svg.append('text')
+    vis.chart.append('text')
         .attr('class', 'axis-title')
         .attr('x', 0)
         .attr('y', 0)
         .attr('dy', '.71em')
-        .text('# of Exoplanets');
+        .text('Exoplanets Count');
+
+    vis.chart.append('text') //x-axis = radius [dist]
+    .attr('class', 'axis-title')
+    .attr('y', vis.height - 15)
+    .attr('x', vis.width + 10)
+    .attr('dy', '.71em')
+    .style('text-anchor', 'end')
+    .text('Start Count');
   }
 
   /**
@@ -83,6 +93,10 @@ class Barchart {
    */
   updateVis() {
     let vis = this;
+
+    if (vis.config.reverseOrder) {
+      vis.data.reverse();
+    }
 
     // Prepare data: count number of trails in each difficulty category
     // i.e. [{ key: 'easy', count: 10 }, {key: 'intermediate', ...
@@ -121,8 +135,21 @@ class Barchart {
         .attr('width', vis.xScale.bandwidth())
         .attr('height', d => vis.height - vis.yScale(vis.yValue(d)))
         .attr('y', d => vis.yScale(vis.yValue(d)))
-        .attr('fill', d => vis.colorScale(vis.colorValue(d)))
-
+        .attr('fill', '#023020')
+    bars
+      .on('mouseover', (event,d) => {
+        d3.select('#tooltip')
+          .style('display', 'block')
+          .style('left', (event.pageX + vis.config.tooltipPadding) + 'px')   
+          .style('top', (event.pageY + vis.config.tooltipPadding) + 'px')
+          .html(`
+            <div class="tooltip-title">Star Count: ${d.key}</div>
+            <div><i>Exoplanet Count: ${d.count}</i></div>
+          `);
+      })
+      .on('mouseleave', () => {
+        d3.select('#tooltip').style('display', 'none');
+      });
     // Update axes
     vis.xAxisG.call(vis.xAxis);
     vis.yAxisG.call(vis.yAxis);

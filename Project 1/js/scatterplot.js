@@ -32,10 +32,11 @@ class Scatterplot {
           .domain(['Easy','Intermediate','Difficult']);
   
       vis.xScale = d3.scaleLinear() 
-          .domain([d3.min(vis.data, d => d.pl_rade)])
+          .domain([0, 100])
           .range([0, vis.width]);
   
-      vis.yScale = d3.scaleLinear() 
+      vis.yScale = d3.scaleLog() 
+          .domain([0, 6000])
           .range([vis.height, 0]);
   
       // Initialize axes
@@ -112,7 +113,7 @@ class Scatterplot {
           .attr('r', 4)
           .attr('cy', d => vis.yScale(vis.yValue(d)))
           .attr('cx', d => vis.xScale(vis.xValue(d)))
-          .attr('fill', d => vis.colorScale(vis.colorValue(d)));
+          .attr('fill', '#69b3a2');
   
       // Tooltip event listeners
       circles
