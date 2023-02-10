@@ -61,12 +61,13 @@ class Barchart {
     // SVG Group containing the actual chart; D3 margin convention
     vis.chart = vis.svg.append('g')
         .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top})`);
+        
 
     // Append empty x-axis group and move it to the bottom of the chart
     vis.xAxisG = vis.chart.append('g')
         .attr('class', 'axis x-axis')
         .attr('transform', `translate(0,${vis.height})`);
-    
+
     // Append y-axis group 
     vis.yAxisG = vis.chart.append('g')
         .attr('class', 'axis y-axis');
