@@ -33,14 +33,33 @@ d3.csv('data/cleaned-exoplanets.csv')
 
 		barchartA = new Barchart({
 			parentElement: '#barchartA',
-			colorScale: colorScale
+			colorScale: colorScale,
+			xAxisTitle: 'Star Count'
 		  }, data);
 		
 		barchartA.updateVis();
 
+		barchartB = new Barchart({
+			parentElement: '#barchartB',
+			colorScale: colorScale,
+			xAxisTitle: 'Planet Count'
+		  }, data);
+
+		barchartB.updateVis();
+
+		barchartC = new Barchart({
+			parentElement: '#barchartC',
+			colorScale: colorScale,
+			xAxisTitle: 'Star Type'
+		  }, data);
+
+		barchartC.updateVis();
+
 		scatterplotA = new Scatterplot({
 			parentElement: '#scatterplotA'
 		}, data);
+
+		scatterplotA.updateVis();
 
 	})
 	.catch(error => console.error(error));

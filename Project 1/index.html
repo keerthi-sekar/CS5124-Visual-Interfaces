@@ -27,13 +27,6 @@
           <div class="card">
             <h2>Exoplanets - Star Count</h2>
             <h5>Exoplanets related based on star count</h5>
-            <!-- <ul class="legend">
-              <li class="legend-btn" data-difficulty="0"><span class="legend-symbol"></span> Unknown</li>
-              <li class="legend-btn" data-difficulty="1"><span class="legend-symbol"></span> 1 star</li>
-              <li class="legend-btn" data-difficulty="2"><span class="legend-symbol"></span> 2 stars</li>
-              <li class="legend-btn" data-difficulty="3"><span class="legend-symbol"></span> 3 stars</li>
-              <li class="legend-btn" data-difficulty="4"><span class="legend-symbol"></span> 4 stars</li>
-            </ul> -->
             <svg id="barchartA"></svg>
             <div id="tooltip"></div>
             <button type="button" class="btn btn-link btn-sm" id="sorting">
@@ -44,43 +37,50 @@
             <h2>Exoplanets - Planet Count</h2>
             <h5>Exoplanets related based on planet count</h5>
             <svg id="barchartB"></svg>
+            <div id="tooltip"></div>
+            <button type="button" class="btn btn-link btn-sm" id="sorting">
+              <img src="images/sort-down.svg" alt="" width="14" height="14" title="Sort"> Reverse order
+            </button>
             </div>
           <div class="card">
-            <h2>Exoplanets orbit by Star Types</h2>
-            <h5>Exoplanets related based on planet count</h5>
+            <h2>Exoplanets - Star Types</h2>
+            <h5>Exoplanets orbit Star Types</h5>
             <svg id="barchartC"></svg>
+            <div id="tooltip"></div>
+            <button type="button" class="btn btn-link btn-sm" id="sorting">
+              <img src="images/sort-down.svg" alt="" width="14" height="14" title="Sort"> Reverse order
+            </button>
             </div> 
           <div class="card">
             <h2>Exoplanets - Radius vs Mass </h2>
-            <h5>Exoplanets related based on planet count</h5>
+            <h5>Exoplanets relationship between radius & mass</h5>
             <svg id="scatterplotA"></svg>
+            <div id="tooltip1"></div>
           </div>
         </div>
         <div class="rightcolumn">
           <div class="card">
             <h2>Exoplanets - Discovery Method</h2>
-            <h5>Exoplanets related based on planet count</h5>
+            <h5>Exoplanets related based on Discovery Method</h5>
             <svg id="barchartD"></svg>
           </div>
           <div class="card">
             <h2>Exoplanets - Habitable vs. Unhabitable</h2>
-            <h5>Exoplanets related based on planet count</h5>
+            <h5>Exoplanets within a habitable zone cs outside habitable zone</h5>
             <svg id="barchartE"></svg>
           </div>
           <div class="card">
-            <h2>Exoplanets - Distribution based on Distance</h2>
-            <h5>Exoplanets related based on planet count</h5>
+            <h2>Exoplanets - Distance</h2>
+            <h5>Exoplanets distributed by distance to Earth</h5>
             <svg id="histogramA"></svg>
           </div>
           <div class="card">
             <h2>Exoplanets - Discoveries over Time</h2>
-            <h5>Exoplanets related based on planet count</h5>
+            <h5>Exoplanets discoveries by year</h5>
             <svg id="linechartA"></svg>
           </div>
         </div>
       </div>
-    
-      <div id="tooltip"></div>
 
     <!-- D3 bundle -->
     <script src="js/d3.v6.min.js"></script>

@@ -12,9 +12,11 @@ class Barchart {
       colorScale: _config.colorScale,
       containerWidth: _config.containerWidth || 550,
       containerHeight: _config.containerHeight || 300,
-      margin: _config.margin || {top: 5, right: 2, bottom: 5, left: 2},
+      margin: _config.margin || {top: 10, right: 10, bottom: 40, left: 40},
       reverseOrder: _config.reverseOrder || false,
-      tooltipPadding: _config.tooltipPadding || 15
+      tooltipPadding: _config.tooltipPadding || 15,
+      xAxisTitle: _config.xAxisTitle || 'Start Count',
+      yAxisTitle: _config.yAxisTitle || 'Exoplanet Count',
     }
     this.data = _data;
     this.initVis();
@@ -31,11 +33,6 @@ class Barchart {
     vis.height = vis.config.containerHeight - vis.config.margin.top - vis.config.margin.bottom;
 
     // Initialize scales and axes
-    
-    // Initialize scales
-    vis.colorScale = d3.scaleOrdinal()
-        .range(['#d3eecd', '#7bc77e', '#2a8d46', "#3CB371", '#023020']) // light green to dark green
-        .domain(['0','1','2','3', '4']);
     
     // Important: we flip array elements in the y output range to position the rectangles correctly
     vis.yScale = d3.scaleLinear()
@@ -78,15 +75,15 @@ class Barchart {
         .attr('x', 0)
         .attr('y', 0)
         .attr('dy', '.71em')
-        .text('Exoplanets Count');
+        .text(vis.config.yAxisTitle);
 
     vis.chart.append('text') //x-axis = radius [dist]
     .attr('class', 'axis-title')
-    .attr('y', vis.height - 15)
+    .attr('y', vis.height + 25)
     .attr('x', vis.width + 10)
     .attr('dy', '.71em')
     .style('text-anchor', 'end')
-    .text('Start Count');
+    .text(vis.config.xAxisTitle);
   }
 
   /**

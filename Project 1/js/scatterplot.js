@@ -10,7 +10,8 @@ class Scatterplot {
         parentElement: _config.parentElement,
         containerWidth: _config.containerWidth || 550,
         containerHeight: _config.containerHeight || 300,
-        margin: _config.margin || {top: 5, right: 2, bottom: 5, left: 2},
+        margin: _config.margin || {top: 15, right: 15, bottom: 40, left: 40},
+        tooltipPadding: _config.tooltipPadding || 15
       }
       this.data = _data;
       this.initVis();
@@ -26,17 +27,12 @@ class Scatterplot {
       vis.width = vis.config.containerWidth - vis.config.margin.left - vis.config.margin.right;
       vis.height = vis.config.containerHeight - vis.config.margin.top - vis.config.margin.bottom;
   
-      // Initialize scales
-      vis.colorScale = d3.scaleOrdinal()
-          .range(['#d3eecd', '#7bc77e', '#2a8d46']) // light green to dark green
-          .domain(['Easy','Intermediate','Difficult']);
-  
       vis.xScale = d3.scaleLinear() 
-          .domain([0, 100])
+          .domain([10, 10000])
           .range([0, vis.width]);
   
-      vis.yScale = d3.scaleLog() 
-          .domain([0, 6000])
+      vis.yScale = d3.scaleLinear() 
+          .domain([10, 10000])
           .range([vis.height, 0]);
   
       // Initialize axes
@@ -113,27 +109,23 @@ class Scatterplot {
           .attr('r', 4)
           .attr('cy', d => vis.yScale(vis.yValue(d)))
           .attr('cx', d => vis.xScale(vis.xValue(d)))
-          .attr('fill', '#69b3a2');
+          .attr('fill', '#023020');
   
       // Tooltip event listeners
       circles
-          .on('mouseover', (event,d) => {
-            d3.select('#tooltip')
-              .style('display', 'block')
-              .style('left', (event.pageX + vis.config.tooltipPadding) + 'px')   
-              .style('top', (event.pageY + vis.config.tooltipPadding) + 'px')
-              .html(`
-                <div class="tooltip-title">${d.pl_name}</div>
-                <div><i>${d.disc_year}</i></div>
-                <ul>
-                  <li>${d.pl_rade} radius, ~${d.pl_bmasse} mass</li>
-                  <li>Discovery Method: ${d.discoverymethod}</li>
-                </ul>
-              `);
-          })
-          .on('mouseleave', () => {
-            d3.select('#tooltip').style('display', 'none');
-          });
+      .on('mouseover', (event,d) => {
+        d3.select('#tooltip')
+          .style('display', 'block')
+          .style('left', (event.pageX + vis.config.tooltipPadding) + 'px')   
+          .style('top', (event.pageY + vis.config.tooltipPadding) + 'px')
+          .html(`
+            <div class="tooltip-title">${d.sys_name}</div>
+            <div><i>Radius ${d.pl_rade}, Mass ${d.pl_bmasse}</i></div>
+          `);
+      })
+      .on('mouseleave', () => {
+        d3.select('#tooltip').style('display', 'none');
+      });
       
       // Update the axes/gridlines
       // We use the second .call() to remove the axis and just show gridlines
