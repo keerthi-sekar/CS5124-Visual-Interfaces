@@ -119,7 +119,7 @@ class Scatterplot {
           .style('left', (event.pageX + vis.config.tooltipPadding) + 'px')   
           .style('top', (event.pageY + vis.config.tooltipPadding) + 'px')
           .html(`
-            <div class="tooltip-title">${d.sys_name}</div>
+            <div class="tooltip-title">${d.hostname}</div>
             <div><i>Radius ${d.pl_rade}, Mass ${d.pl_bmasse}</i></div>
           `);
       })
