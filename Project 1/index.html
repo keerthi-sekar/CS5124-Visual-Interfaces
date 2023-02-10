@@ -27,22 +27,51 @@
           <div class="card">
             <h2>Exoplanets - Star Count</h2>
             <h5>Exoplanets related based on star count</h5>
+            <!-- <ul class="legend">
+              <li class="legend-btn" data-difficulty="0"><span class="legend-symbol"></span> Unknown</li>
+              <li class="legend-btn" data-difficulty="1"><span class="legend-symbol"></span> 1 star</li>
+              <li class="legend-btn" data-difficulty="2"><span class="legend-symbol"></span> 2 stars</li>
+              <li class="legend-btn" data-difficulty="3"><span class="legend-symbol"></span> 3 stars</li>
+              <li class="legend-btn" data-difficulty="4"><span class="legend-symbol"></span> 4 stars</li>
+            </ul> -->
             <svg id="barchartA"></svg>
             </div>
           <div class="card">
             <h2>Exoplanets - Planet Count</h2>
             <h5>Exoplanets related based on planet count</h5>
-            <div class="fakeimg" style="height:200px;">Image</div>
+            <svg id="barchartB"></svg>
             </div>
+          <div class="card">
+            <h2>Exoplanets orbit by Star Types</h2>
+            <h5>Exoplanets related based on planet count</h5>
+            <svg id="barchartC"></svg>
+            </div> 
+          <div class="card">
+            <h2>Exoplanets - Radius vs Mass </h2>
+            <h5>Exoplanets related based on planet count</h5>
+            <svg id="scatterplotA"></svg>
+          </div>
         </div>
         <div class="rightcolumn">
           <div class="card">
-            <h2>Fields Description</h2>
-            <div class="fakeimg" style="height:100px;">Image</div>
+            <h2>Exoplanets - Discovery Method</h2>
+            <h5>Exoplanets related based on planet count</h5>
+            <svg id="barchartD"></svg>
           </div>
           <div class="card">
-            <h3>Habitable Ranges</h3>
-            <p>insert ranges here</p>
+            <h2>Exoplanets - Habitable vs. Unhabitable</h2>
+            <h5>Exoplanets related based on planet count</h5>
+            <svg id="barchartE"></svg>
+          </div>
+          <div class="card">
+            <h2>Exoplanets - Distribution based on Distance</h2>
+            <h5>Exoplanets related based on planet count</h5>
+            <svg id="histogramA"></svg>
+          </div>
+          <div class="card">
+            <h2>Exoplanets - Discoveries over Time</h2>
+            <h5>Exoplanets related based on planet count</h5>
+            <svg id="linechartA"></svg>
           </div>
         </div>
       </div>
@@ -55,8 +84,9 @@
     <!-- Our JS code - INCLUDING the new files-->
     <script src="js/main.js"></script>
     <script src="js/barchart.js"></script>
-
-
+    <script src="js/histogram.js"></script>
+    <script src="js/linechart.js"></script>
+    <script src="js/scatterplot.js"></script>
 
 </body>
 </html>

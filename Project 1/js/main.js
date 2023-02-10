@@ -1,8 +1,8 @@
 console.log("Hello world");
 
-let barchartA, data;
+let barchartA, scatterplotA, data;
 //pl_name,hostname,sys_name,sy_snum,sy_pnum,discoverymethod,disc_year,pl_orbsmax,pl_rade,pl_bmasse,pl_orbeccen,st_spectype,st_rad,st_mass,sy_dist,disc_facility
-d3.csv('data/exoplanets-label-blanks.csv')
+d3.csv('data/cleaned-exoplanets.csv')
 	.then(_data => {
 		data = _data;
 	  	console.log(data);
@@ -28,15 +28,20 @@ d3.csv('data/exoplanets-label-blanks.csv')
 		console.log('Data loading complete. Work with dataset.');
 		// Initialize chart and then show it
 		const colorScale = d3.scaleOrdinal()
-        .range(['#d3eecd', '#7bc77e', '#2a8d46']) // light green to dark green
-        .domain(['Easy','Intermediate','Difficult']);
-		//barchartA = new Barchart({ parentElement: '#barchartA'}, data);
+        .range(['#d3eecd', '#7bc77e', '#2a8d46', "#3CB371", '#023020']) // light green to dark green
+        .domain(['0','1','2','3', '4']);
+
 		barchartA = new Barchart({
 			parentElement: '#barchartA',
 			colorScale: colorScale
 		  }, data);
-		  barchartA.updateVis();
-		//barchartA.updateVis();
+		
+		barchartA.updateVis();
+
+		scatterplotA = new Scatterplot({
+			parentElement: '#scatterplotA'
+		}, data);
+
 	})
 	.catch(error => console.error(error));
 
