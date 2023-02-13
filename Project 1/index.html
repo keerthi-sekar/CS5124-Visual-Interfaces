@@ -38,18 +38,12 @@
             <h5>Exoplanets related based on planet count</h5>
             <svg id="barchartB"></svg>
             <div id="tooltip"></div>
-            <button type="button" class="btn btn-link btn-sm" id="sorting">
-              <img src="images/sort-down.svg" alt="" width="14" height="14" title="Sort"> Reverse order
-            </button>
             </div>
           <div class="card">
             <h2>Exoplanets - Star Types</h2>
             <h5>Exoplanets orbit Star Types</h5>
             <svg id="barchartC"></svg>
             <div id="tooltip"></div>
-            <button type="button" class="btn btn-link btn-sm" id="sorting">
-              <img src="images/sort-down.svg" alt="" width="14" height="14" title="Sort"> Reverse order
-            </button>
             </div> 
           <div class="card">
             <h2>Exoplanets - Radius vs Mass </h2>
@@ -63,11 +57,13 @@
             <h2>Exoplanets - Discovery Method</h2>
             <h5>Exoplanets related based on Discovery Method</h5>
             <svg id="barchartD"></svg>
+            <div id="tooltip"></div>
           </div>
           <div class="card">
             <h2>Exoplanets - Habitable vs. Unhabitable</h2>
             <h5>Exoplanets within a habitable zone cs outside habitable zone</h5>
             <svg id="barchartE"></svg>
+            <div id="tooltip"></div>
           </div>
           <div class="card">
             <h2>Exoplanets - Distance</h2>
@@ -77,6 +73,9 @@
           <div class="card">
             <h2>Exoplanets - Discoveries over Time</h2>
             <h5>Exoplanets discoveries by year</h5>
+            <div>
+              Start year: <input type="number" value="1995" min="1995" max="2023" id="start-year-input">
+            </div>
             <svg id="linechartA"></svg>
           </div>
         </div>

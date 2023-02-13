@@ -1,8 +1,8 @@
 console.log("Hello world");
 
-let barchartA, scatterplotA, data;
+let barchartA, barchartB, barchartC, barchartD, barchartE, scatterplotA, linechartA, data;
 //pl_name,hostname,sys_name,sy_snum,sy_pnum,discoverymethod,disc_year,pl_orbsmax,pl_rade,pl_bmasse,pl_orbeccen,st_spectype,st_rad,st_mass,sy_dist,disc_facility
-d3.csv('data/cleaned-exoplanets.csv')
+d3.csv('data/cleaned-exoplanets.csv', d3.autoType)
 	.then(_data => {
 		data = _data;
 	  	console.log(data);
@@ -12,7 +12,7 @@ d3.csv('data/cleaned-exoplanets.csv')
 			d.hostname = +d.hostname;
 			d.sys_name = +d.sys_name;
 			d.sy_snum = +d.sy_snum;
-			d.sypnum = +d.sypnum;
+			d.sy_pnum = +d.sy_pnum;
 			d.discoverymethod = +d.discoverymethod;
 			d.disc_year = +d.disc_year;
 			d.pl_orbsmax = +d.pl_orbsmax;
@@ -30,6 +30,8 @@ d3.csv('data/cleaned-exoplanets.csv')
 		const colorScale = d3.scaleOrdinal()
         .range(['#d3eecd', '#7bc77e', '#2a8d46', "#3CB371", '#023020']) // light green to dark green
         .domain(['0','1','2','3', '4']);
+
+		data = data.sort(sortByDateAscending)
 
 		barchartA = new Barchart({
 			parentElement: '#barchartA',
@@ -55,11 +57,33 @@ d3.csv('data/cleaned-exoplanets.csv')
 
 		barchartC.updateVis();
 
+		barchartD = new Barchart({
+			parentElement: '#barchartD',
+			colorScale: colorScale,
+			xAxisTitle: 'Discovery Method'
+		  }, data);
+
+		barchartD.updateVis();
+
+		barchartE = new Barchart({
+			parentElement: '#barchartE',
+			colorScale: colorScale,
+			xAxisTitle: 'Zones'
+		  }, data);
+
+		barchartE.updateVis();
+
 		scatterplotA = new Scatterplot({
 			parentElement: '#scatterplotA'
 		}, data);
 
 		scatterplotA.updateVis();
+
+		linechartA = new LineChart({
+			parentElement: '#linechartA'
+		}, data);
+
+		linechartA.updateVis();
 
 	})
 	.catch(error => console.error(error));
@@ -69,6 +93,21 @@ d3.select('#sorting').on('click', d => {
 	barchartA.updateVis();
 })
 
+d3.select('#start-year-input').on('change', function() {
+	// Get selected year
+	const minYear = parseInt(d3.select(this).property('value'));
+  
+	// Filter dataset accordingly
+	let filteredData = data.filter(d => d.disc_year >= minYear);
+  
+	// Update chart
+	linechartA.data = filteredData;
+	linechartA.updateVis();
+});
+
+function sortByDateAscending(a,b){
+	return a.disc_year - b.disc_year;
+}
 
 function GenerateTable() {
 	var filename = 'clean-exoplanets.csv';
