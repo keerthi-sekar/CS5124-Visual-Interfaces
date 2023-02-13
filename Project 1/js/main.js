@@ -5,7 +5,6 @@ let barchartA, barchartB, barchartC, barchartD, barchartE, scatterplotA, linecha
 d3.csv('data/cleaned-exoplanets.csv', d3.autoType)
 	.then(_data => {
 		data = _data;
-	  	console.log(data);
 
 		data.forEach(d => {
 			d.pl_name = d.pl_name;
@@ -26,9 +25,12 @@ d3.csv('data/cleaned-exoplanets.csv', d3.autoType)
 			d.disc_facility = d.disc_facility;
 		});
 		console.log(data);
-		
-		data = data.sort((a,b) => a.disc_year - b.disc_year);
-		data = data.sort(function (a,b) {return d3.ascending(a.discoverymethod, b.discoverymethod);});
+
+		//data = data.sort(function (a,b) {return d3.ascending(a.discoverymethod, b.discoverymethod);});
+		data = data.sort(function (a,b) {return d3.ascending(a.sy_snum, b.sy_snum);});
+		data = data.sort(function (a,b) {return d3.ascending(a.sy_pnum, b.sy_pnum);});
+		data = data.sort(function (a,b) {return d3.ascending(a.sy_dist, b.sy_dist);});
+		data = data.sort(function (a,b) {return d3.ascending(a.disc_year, b.disc_year);});
 
 		var snum_map = d3.rollups(data, v => v.length, d => d.sy_snum);
 		var pnum_map = d3.rollups(data, v => v.length, d => d.sy_pnum);
@@ -84,12 +86,7 @@ d3.csv('data/cleaned-exoplanets.csv', d3.autoType)
 
 		linechartA.updateVis();
 
-		histogramA = new Barchart({
-			parentElement: '#histogramA',
-			xAxisTitle: 'Distances'
-		}, data, dist_map);
-
-		histogramA.updateVis();
+		
 
 	})
 	.catch(error => console.error(error));

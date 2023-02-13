@@ -72,8 +72,8 @@ class Barchart {
     // Append axis title
     vis.chart.append('text')
         .attr('class', 'axis-title')
-        .attr('x', 0)
-        .attr('y', 0)
+        .attr('x', -10)
+        .attr('y', -10)
         .attr('dy', '.71em')
         .text(vis.config.yAxisTitle);
 

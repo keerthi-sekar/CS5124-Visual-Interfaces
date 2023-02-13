@@ -10,8 +10,8 @@ class Scatterplot {
         parentElement: _config.parentElement,
         containerWidth: _config.containerWidth || 550,
         containerHeight: _config.containerHeight || 300,
-        margin: _config.margin || {top: 15, right: 15, bottom: 40, left: 40},
-        tooltipPadding: _config.tooltipPadding || 15
+        margin: _config.margin || {top: 15, right: 15, bottom: 50, left: 50},
+        tooltipPadding: _config.tooltipPadding || 10
       }
       this.data = _data;
       this.initVis();
