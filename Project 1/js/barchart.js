@@ -5,11 +5,10 @@ class Barchart {
    * @param {Object}
    * @param {Array}
    */
-  constructor(_config, _data) {
+  constructor(_config, _data, _map) {
     // Configuration object with defaults
     this.config = {
       parentElement: _config.parentElement,
-      colorScale: _config.colorScale,
       containerWidth: _config.containerWidth || 550,
       containerHeight: _config.containerHeight || 300,
       margin: _config.margin || {top: 10, right: 10, bottom: 40, left: 40},
@@ -19,6 +18,7 @@ class Barchart {
       yAxisTitle: _config.yAxisTitle || 'Exoplanet Count',
     }
     this.data = _data;
+    this.num_map = _map;
     this.initVis();
   }
   
@@ -43,7 +43,7 @@ class Barchart {
         .paddingInner(0.2);
 
     vis.xAxis = d3.axisBottom(vis.xScale)
-        .ticks('0','1','2','3', '4')
+        .ticks(data)
         .tickSizeOuter(0);
 
     vis.yAxis = d3.axisLeft(vis.yScale)
@@ -98,8 +98,8 @@ class Barchart {
 
     // Prepare data: count number of trails in each difficulty category
     // i.e. [{ key: 'easy', count: 10 }, {key: 'intermediate', ...
-    const aggregatedDataMap = d3.rollups(vis.data, v => v.length, d => d.sy_snum);
-    vis.aggregatedData = Array.from(aggregatedDataMap, ([key, count]) => ({ key, count }));
+    //const aggregatedDataMap = d3.rollups(vis.data, v => v.length, d => d.sy_snum);
+    vis.aggregatedData = Array.from(vis.num_map, ([key, count]) => ({ key, count }));
 
     const orderedKeys = ['0','1','2','3', '4'];
     vis.aggregatedData = vis.aggregatedData.sort((a,b) => {
@@ -107,7 +107,6 @@ class Barchart {
     });
 
     // Specificy accessor functions
-    vis.colorValue = d => d.key;
     vis.xValue = d => d.key;
     vis.yValue = d => d.count;
 
@@ -141,8 +140,8 @@ class Barchart {
           .style('left', (event.pageX + vis.config.tooltipPadding) + 'px')   
           .style('top', (event.pageY + vis.config.tooltipPadding) + 'px')
           .html(`
-            <div class="tooltip-title">Star Count: ${d.key}</div>
-            <div><i>Exoplanet Count: ${d.count}</i></div>
+            <div class="tooltip-title">${vis.config.xAxisTitle}: ${d.key}</div>
+            <div><i>Exoplanets: ${d.count}</i></div>
           `);
       })
       .on('mouseleave', () => {

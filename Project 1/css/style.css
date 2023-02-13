@@ -79,7 +79,8 @@
   .card {
     background-color: white;
     padding: 20px;
-    margin-top: 20px;
+    margin-top: 10px;
+    width: 700px;
   }
   
   .legend {
