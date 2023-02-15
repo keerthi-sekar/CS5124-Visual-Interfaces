@@ -36,6 +36,7 @@ d3.csv('data/cleaned-exoplanets.csv', d3.autoType)
 		var pnum_map = d3.rollups(data, v => v.length, d => d.sy_pnum);
 		var dist_map = d3.rollups(data, v => v.length, d => d.sy_dist);
 		var discmethod_map = d3.rollups(data, v => v.length, d => d.discoverymethod);
+		var discoveries_map = d3.rollups(data, v => v.length, d => d.disc_year);
 
 		barchartA = new Barchart({
 			parentElement: '#barchartA',
@@ -82,7 +83,7 @@ d3.csv('data/cleaned-exoplanets.csv', d3.autoType)
 
 		linechartA = new LineChart({
 			parentElement: '#linechartA'
-		}, data);
+		}, discoveries_map);
 
 		linechartA.updateVis();
 

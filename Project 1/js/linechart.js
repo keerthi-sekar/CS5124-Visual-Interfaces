@@ -27,22 +27,23 @@ class LineChart {
       vis.height = vis.config.containerHeight - vis.config.margin.top - vis.config.margin.bottom;
   
       vis.xScale = d3.scaleTime()
-          .domain(d3.extent(data, d => d.disc_year)).nice()
+          //.domain(d3.extent(data, d => d.disc_year)).nice()
           .range([0, vis.width]);
   
       vis.yScale = d3.scaleLinear()
-          .domain(d3.extent(data, d => d.sy_pnum)).nice()
-          .range([vis.height, 0]);
+          //.domain(d3.extent(data, d => d.sy_pnum)).nice()
+          .range([vis.height, 0])
+          .nice();
   
       // Initialize axes
       vis.xAxis = d3.axisBottom(vis.xScale)
-          .ticks(10)
+          .ticks(6)
           .tickSizeOuter(0)
-          .tickPadding(10)
-          .tickFormat(d3.timeFormat("%Y")); // <-- format
+          .tickPadding(10);
+          //.tickFormat(d3.timeFormat("%Y")); // <-- format
   
       vis.yAxis = d3.axisLeft(vis.yScale)
-          .ticks(10)
+          .ticks(4)
           .tickSizeOuter(0)
           .tickPadding(10);
   
@@ -58,8 +59,7 @@ class LineChart {
       // Append empty x-axis group and move it to the bottom of the chart
       vis.xAxisG = vis.chart.append('g')
           .attr('class', 'axis x-axis')
-          .attr('transform', `translate(0,${vis.height})`)
-          .call(d3.axisBottom(vis.xScale).ticks(vis.width / 80).tickSizeOuter(0));
+          .attr('transform', `translate(0,${vis.height})`);
       
       // Append y-axis group
       vis.yAxisG = vis.chart.append('g')
@@ -68,10 +68,10 @@ class LineChart {
           .call(g => g.select(".domain").remove())
           .call(g => g.append("text")
               .attr("x", 0)
-              .attr("y", 10)
-              .attr("fill", "currentColor")
+              .attr("y", 100)
+              .attr("fill", "none")
               .attr("text-anchor", "start")
-              .text(data.sy_pnum));
+              .text(data[1]));
   
       // We need to make sure that the tracking area is on top of other chart elements
       vis.marks = vis.chart.append('g');
@@ -100,9 +100,9 @@ class LineChart {
     updateVis() {
       let vis = this;
       
-      vis.xValue = d => d.disc_year;
-      vis.yValue = d => d.sy_pnum;
-  
+      vis.xValue = d => d[0];
+      vis.yValue = d => d[1];
+      
       vis.line = d3.line()
           .x(d => vis.xScale(vis.xValue(d)))
           .y(d => vis.yScale(vis.yValue(d)));
@@ -127,8 +127,9 @@ class LineChart {
           .data([vis.data])
         .join('path')
           .attr('class', 'chart-line')
-          .attr('d', vis.line)
-          .attr('fill', '#023020');
+          .attr('stroke', '#023020')
+          .attr('fill', '#none')
+          .attr('d', vis.line);
   
       /* vis.trackingArea
         .on('mouseenter', () => {
