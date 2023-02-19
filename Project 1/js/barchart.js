@@ -9,9 +9,9 @@ class Barchart {
     // Configuration object with defaults
     this.config = {
       parentElement: _config.parentElement,
-      containerWidth: _config.containerWidth || 550,
-      containerHeight: _config.containerHeight || 300,
-      margin: _config.margin || {top: 10, right: 10, bottom: 40, left: 40},
+      containerWidth: _config.containerWidth || 400,
+      containerHeight: _config.containerHeight || 250,
+      margin: _config.margin || {top: 10, right: 5, bottom: 40, left: 20},
       reverseOrder: _config.reverseOrder || false,
       tooltipPadding: _config.tooltipPadding || 15,
       xAxisTitle: _config.xAxisTitle || 'Start Count',
@@ -80,7 +80,7 @@ class Barchart {
     vis.chart.append('text') //x-axis = radius [dist]
     .attr('class', 'axis-title')
     .attr('y', vis.height + 25)
-    .attr('x', vis.width + 10)
+    .attr('x', vis.width + 5)
     .attr('dy', '.71em')
     .style('text-anchor', 'end')
     .text(vis.config.xAxisTitle);

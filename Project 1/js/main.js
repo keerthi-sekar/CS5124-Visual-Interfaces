@@ -17,8 +17,8 @@ d3.csv('data/cleaned-exoplanets.csv', d3.autoType)
 			d.pl_orbsmax = +d.pl_orbsmax;
 			d.pl_rade = +d.pl_rade;
 			d.pl_bmasse = +d.pl_bmasse;
-			d.pl_orbecce = +d.pl_orbecce;
-			d.st_spectype = d.st_spectype;
+			//d.pl_orbecce = d.pl_orbecce;
+			d.st_spectype = d.st_spectype.charAt(0);
 			d.st_rad = +d.st_rad;
 			d.st_mass = +d.st_mass;
 			d.sy_dist = +d.sy_dist;
@@ -37,6 +37,7 @@ d3.csv('data/cleaned-exoplanets.csv', d3.autoType)
 		var dist_map = d3.rollups(data, v => v.length, d => d.sy_dist);
 		var discmethod_map = d3.rollups(data, v => v.length, d => d.discoverymethod);
 		var discoveries_map = d3.rollups(data, v => v.length, d => d.disc_year);
+		var stype_map = d3.rollups(data, v => v.length, d => d.st_spectype);
 
 		barchartA = new Barchart({
 			parentElement: '#barchartA',
@@ -55,14 +56,14 @@ d3.csv('data/cleaned-exoplanets.csv', d3.autoType)
 		barchartC = new Barchart({
 			parentElement: '#barchartC',
 			xAxisTitle: 'Star Type'
-		  }, data, pnum_map);
+		  }, data, stype_map);
 
 		barchartC.updateVis();
 
 		barchartD = new Barchart({
 			parentElement: '#barchartD',
-			containerWidth: 1000,
-			containerHeight: 400,
+			containerWidth: 850,
+			containerHeight: 350,
 			xAxisTitle: 'Discovery Method'
 		  }, data, discmethod_map);
 
@@ -87,7 +88,12 @@ d3.csv('data/cleaned-exoplanets.csv', d3.autoType)
 
 		linechartA.updateVis();
 
-		
+		histogramA = new Barchart({
+			parentElement: '#histogramA',
+			xAxisTitle: 'Distances'
+		  }, data, dist_map);
+
+		histogramA.updateVis();
 
 	})
 	.catch(error => console.error(error));

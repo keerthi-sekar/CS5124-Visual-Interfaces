@@ -8,8 +8,8 @@ class LineChart {
     constructor(_config, _data) {
       this.config = {
         parentElement: _config.parentElement,
-        containerWidth: _config.containerWidth || 550,
-        containerHeight: _config.containerHeight || 300,
+        containerWidth: _config.containerWidth || 400,
+        containerHeight: _config.containerHeight || 250,
         margin: _config.margin || {top: 15, right: 15, bottom: 40, left: 40},
         tooltipPadding: _config.tooltipPadding || 15
       }
@@ -128,35 +128,8 @@ class LineChart {
         .join('path')
           .attr('class', 'chart-line')
           .attr('stroke', '#023020')
-          .attr('fill', '#none')
+          .attr('fill', '#023020')
           .attr('d', vis.line);
-  
-      /* vis.trackingArea
-        .on('mouseenter', () => {
-            vis.tooltip.style('display', 'block');
-        })
-        .on('mouseleave', () => {
-            vis.tooltip.style('display', 'none');
-        })
-        .on('mousemove', function(event) {
-            // Get date that corresponds to current mouse x-coordinate
-            const xPos = d3.pointer(event, this)[0]; // First array element is x, second is y
-            const date = vis.xScale.invert(xPos);
-
-            // Find nearest data point
-            const index = vis.bisectDate(vis.data, date, 1);
-            const a = vis.data[index - 1];
-            const b = vis.data[index];
-            const d = b && (date - a.date > b.date - date) ? b : a; 
-
-            // Update tooltip
-            vis.tooltip.select('circle')
-                .attr('transform', `translate(${vis.xScale(d.disc_year)},${vis.yScale(d.sy_pnum)})`);
-            
-            vis.tooltip.select('text')
-                .attr('transform', `translate(${vis.xScale(d.disc_year)},${(vis.yScale(d.sy_pnum) - 15)})`)
-                .text(Math.round(d.sy_pnum));
-        });  */
       
       // Update the axes
       vis.xAxisG.call(vis.xAxis);

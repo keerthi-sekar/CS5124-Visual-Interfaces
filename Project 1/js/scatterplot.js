@@ -8,8 +8,8 @@ class Scatterplot {
     constructor(_config, _data) {
       this.config = {
         parentElement: _config.parentElement,
-        containerWidth: _config.containerWidth || 550,
-        containerHeight: _config.containerHeight || 300,
+        containerWidth: _config.containerWidth || 400,
+        containerHeight: _config.containerHeight || 250,
         margin: _config.margin || {top: 15, right: 15, bottom: 50, left: 50},
         tooltipPadding: _config.tooltipPadding || 10
       }
@@ -63,8 +63,8 @@ class Scatterplot {
       // Append both axis titles
       vis.chart.append('text') //x-axis = radius [dist]
           .attr('class', 'axis-title')
-          .attr('y', vis.height - 15)
-          .attr('x', vis.width + 10)
+          .attr('y', vis.height + 25)
+          .attr('x', vis.width + 5)
           .attr('dy', '.71em')
           .style('text-anchor', 'end')
           .text('Radius');
@@ -119,7 +119,7 @@ class Scatterplot {
           .style('left', (event.pageX + vis.config.tooltipPadding) + 'px')   
           .style('top', (event.pageY + vis.config.tooltipPadding) + 'px')
           .html(`
-            <div class="tooltip-title">${d.hostname}</div>
+            <div class="tooltip-title">${d.hostname} - ${d.disc_year}</div>
             <div><i>Radius ${d.pl_rade}, Mass ${d.pl_bmasse}</i></div>
           `);
       })
