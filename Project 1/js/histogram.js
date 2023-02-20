@@ -9,7 +9,7 @@ class Histogram {
       this.config = {
         parentElement: _config.parentElement,
         containerWidth: _config.containerWidth || 400,
-        containerHeight: _config.containerHeight || 200,
+        containerHeight: _config.containerHeight || 250,
         margin: _config.margin || {top: 15, right: 15, bottom: 40, left: 40},
         tooltipPadding: _config.tooltipPadding || 15
       }
@@ -27,7 +27,50 @@ class Histogram {
       vis.width = vis.config.containerWidth - vis.config.margin.left - vis.config.margin.right;
       vis.height = vis.config.containerHeight - vis.config.margin.top - vis.config.margin.bottom;
       
+      vis.xScale = d3.scaleLinear()
+          .domain([0, 1000])     // can use this instead of 1000 to have the max of data: d3.max(data, function(d) { return +d.price })
+          .range([0, vis.width]);
+
+      vis.xAxisG = vis.chart.append('g')
+          .attr('class', 'axis x-axis')
+          .attr('transform', `translate(0,${vis.height})`);
+
+      vis.svg = d3.select(vis.config.parentElement)
+          .attr('width', vis.config.containerWidth)
+          .attr('height', vis.config.containerHeight);
+
+      // set the parameters for the histogram
+      const histogram = d3.histogram()
+          .value(function(d) { return d.price; })   // I need to give the vector of value
+          .domain(vis.xScale.domain())  // then the domain of the graphic
+          .thresholds(vis.xScale.ticks(70)); // then the numbers of bins
+
+      // And apply this function to data to get the bins
+      const bins = histogram(data);
+
+      // Y axis: scale and draw:
+      vis.yScale = d3.scaleLinear()
+          .range([height, 0]);
+          vis.yScale.domain([0, d3.max(bins, function(d) { return d.sy_pnum; })]);   // d3.hist has to be called before the Y axis obviously
       
+      vis.chart = vis.svg.append("g")
+          .call(d3.axisLeft(vis.yScale));
+
+      // Append y-axis group 
+      vis.yAxisG = vis.chart.append('g')
+      .attr('class', 'axis y-axis');
+
+      // append the bar rectangles to the svg element
+      svg.selectAll("rect")
+          .data(bins)
+          .join("rect")
+            .attr("x", 1)
+        .attr("transform", function(d) { return `translate(${x(d.x0)} , ${y(d.sy_pnum)})`})
+            .attr("width", function(d) { return x(d.x1) - x(d.x0) -1})
+            .attr("height", function(d) { return height - y(d.length); })
+            .style("fill", "#69b3a2")
+
+      //this.renderVis();
     }
   
     /**
@@ -36,8 +79,7 @@ class Histogram {
     updateVis() {
       let vis = this;
       
-     
-  
+      
       vis.renderVis();
     }
   
@@ -47,6 +89,14 @@ class Histogram {
     renderVis() {
       let vis = this;
       
+      vis.svg.selectAll("rect")
+      .data(bins)
+      .join("rect")
+        .attr("x", 1)
+    .attr("transform", function(d) { return `translate(${x(d.x0)} , ${y(d.sy_pnum)})`})
+        .attr("width", function(d) { return x(d.x1) - x(d.x0) -1})
+        .attr("height", function(d) { return height - y(d.sy_pnum); })
+        .style("fill", "#69b3a2")
       
     }
   }

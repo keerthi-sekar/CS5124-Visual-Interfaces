@@ -27,13 +27,12 @@ class LineChart {
       vis.height = vis.config.containerHeight - vis.config.margin.top - vis.config.margin.bottom;
   
       vis.xScale = d3.scaleTime()
-          //.domain(d3.extent(data, d => d.disc_year)).nice()
+          .domain(d3.extent(data, d => d.disc_year)).nice()
           .range([0, vis.width]);
   
       vis.yScale = d3.scaleLinear()
-          //.domain(d3.extent(data, d => d.sy_pnum)).nice()
-          .range([vis.height, 0])
-          .nice();
+          .domain(d3.extent(data, d => d.sy_pnum)).nice()
+          .range([vis.height, 0]);
   
       // Initialize axes
       vis.xAxis = d3.axisBottom(vis.xScale)
@@ -128,9 +127,35 @@ class LineChart {
         .join('path')
           .attr('class', 'chart-line')
           .attr('stroke', '#023020')
-          .attr('fill', '#023020')
+          .attr('fill', 'none')
           .attr('d', vis.line);
       
+      /* vis.trackingArea
+          .on('mouseenter', () => {
+            vis.tooltip.style('display', 'block');
+          })
+          .on('mouseleave', () => {
+            vis.tooltip.style('display', 'none');
+          })
+          .on('mousemove', function(event) {
+            // Get date that corresponds to current mouse x-coordinate
+            const xPos = d3.pointer(event, this)[0]; // First array element is x, second is y
+            const date = vis.xScale.invert(xPos);
+  
+            // Find nearest data point
+            const index = vis.bisectDate(vis.data, date, 1);
+            const a = vis.data[index - 1];
+            const b = vis.data[index];
+            const d = b && (a.disc_year > b.disc_year) ? b : a; 
+  
+            // Update tooltip
+            vis.tooltip.select('circle')
+                .attr('transform', `translate(${vis.xScale(d.disc_year)},${vis.yScale(d.sy_pnum)})`);
+            
+            vis.tooltip.select('text')
+                .attr('transform', `translate(${vis.xScale(d.disc_year)},${(vis.yScale(d.sy_pnum))})`)
+                .text(d.sy_pnum);
+          }); */
       // Update the axes
       vis.xAxisG.call(vis.xAxis);
       vis.yAxisG.call(vis.yAxis);

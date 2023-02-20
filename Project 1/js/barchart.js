@@ -11,11 +11,11 @@ class Barchart {
       parentElement: _config.parentElement,
       containerWidth: _config.containerWidth || 400,
       containerHeight: _config.containerHeight || 250,
-      margin: _config.margin || {top: 10, right: 5, bottom: 40, left: 20},
+      margin: _config.margin || {top: 10, right: 10, bottom: 40, left: 40},
       reverseOrder: _config.reverseOrder || false,
       tooltipPadding: _config.tooltipPadding || 15,
       xAxisTitle: _config.xAxisTitle || 'Start Count',
-      yAxisTitle: _config.yAxisTitle || 'Exoplanet Count',
+      yAxisTitle: _config.yAxisTitle || 'Exoplanets',
     }
     this.data = _data;
     this.num_map = _map;
@@ -36,7 +36,7 @@ class Barchart {
     
     // Important: we flip array elements in the y output range to position the rectangles correctly
     vis.yScale = d3.scaleLinear()
-        .range([vis.height, 0]) 
+        .range([vis.height, 0]); 
 
     vis.xScale = d3.scaleBand()
         .range([0, vis.width])
@@ -101,10 +101,10 @@ class Barchart {
     //const aggregatedDataMap = d3.rollups(vis.data, v => v.length, d => d.sy_snum);
     vis.aggregatedData = Array.from(vis.num_map, ([key, count]) => ({ key, count }));
 
-    const orderedKeys = ['0','1','2','3', '4'];
+    /*const orderedKeys = ['0','1','2','3', '4'];
     vis.aggregatedData = vis.aggregatedData.sort((a,b) => {
       return orderedKeys.indexOf(a.key) - orderedKeys.indexOf(b.key);
-    });
+    });*/
 
     // Specificy accessor functions
     vis.xValue = d => d.key;

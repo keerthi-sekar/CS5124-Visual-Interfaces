@@ -1,6 +1,6 @@
 console.log("Hello world");
 
-let barchartA, barchartB, barchartC, barchartD, barchartE, scatterplotA, linechartA, histogramA, data;
+let barchartA, barchartB, barchartC, barchartD, barchartE, scatterplotA, linechartA, histogramA, dataTable, data;
 //pl_name,hostname,sys_name,sy_snum,sy_pnum,discoverymethod,disc_year,pl_orbsmax,pl_rade,pl_bmasse,pl_orbeccen,st_spectype,st_rad,st_mass,sy_dist,disc_facility
 d3.csv('data/cleaned-exoplanets.csv', d3.autoType)
 	.then(_data => {
@@ -38,6 +38,7 @@ d3.csv('data/cleaned-exoplanets.csv', d3.autoType)
 		var discmethod_map = d3.rollups(data, v => v.length, d => d.discoverymethod);
 		var discoveries_map = d3.rollups(data, v => v.length, d => d.disc_year);
 		var stype_map = d3.rollups(data, v => v.length, d => d.st_spectype);
+		var spectype_groups = d3.group(data, d => d.st_spectype);
 
 		barchartA = new Barchart({
 			parentElement: '#barchartA',
@@ -62,22 +63,23 @@ d3.csv('data/cleaned-exoplanets.csv', d3.autoType)
 
 		barchartD = new Barchart({
 			parentElement: '#barchartD',
-			containerWidth: 850,
-			containerHeight: 350,
+			containerWidth: 1100,
+			containerHeight: 400,
 			xAxisTitle: 'Discovery Method'
 		  }, data, discmethod_map);
 
 		barchartD.updateVis();
 
-		barchartE = new Barchart({
+		barchartE = new RangedBarChart({
 			parentElement: '#barchartE',
-			xAxisTitle: 'Zones'
-		  }, data, pnum_map);
+			xAxisTitle: 'Star Types'
+		  }, data, stype_map);
 
 		barchartE.updateVis();
 
 		scatterplotA = new Scatterplot({
-			parentElement: '#scatterplotA'
+			parentElement: '#scatterplotA',
+			containerHeight: 400
 		}, data);
 
 		scatterplotA.updateVis();
@@ -88,12 +90,11 @@ d3.csv('data/cleaned-exoplanets.csv', d3.autoType)
 
 		linechartA.updateVis();
 
-		histogramA = new Barchart({
+		/* histogramA = new Histogram({
 			parentElement: '#histogramA',
-			xAxisTitle: 'Distances'
-		  }, data, dist_map);
+		  }, data);
 
-		histogramA.updateVis();
+		histogramA.updateVis(); */
 
 	})
 	.catch(error => console.error(error));
@@ -115,8 +116,40 @@ d3.select('#start-year-input').on('change', function() {
 	linechartA.updateVis();
 });
 
-function sortByDateAscending(a,b){
-	return a.disc_year - b.disc_year;
+function tabulate(data, columns) {
+	console.log("tabulate");
+    var table = d3.select("datatable").append("table")
+            //.attr("style", "margin-left: 250px"),
+        thead = table.append("thead"),
+        tbody = table.append("tbody");
+
+    // append the header row
+    thead.append("tr")
+        .selectAll("th")
+        .data(columns)
+        .enter()
+        .append("th")
+            .text(function(column) { return column; });
+
+    // create a row for each object in the data
+    var rows = tbody.selectAll("tr")
+        .data(data)
+        .enter()
+        .append("tr");
+
+    // create a cell in each row for each column
+    var cells = rows.selectAll("td")
+        .data(function(row) {
+            return columns.map(function(column) {
+                return {column: column, value: row[column]};
+            });
+        })
+        .enter()
+        .append("td")
+        .attr("style", "font-family: Courier")
+            .html(function(d) { return d.value; });
+    
+    return table;
 }
 
 function GenerateTable() {

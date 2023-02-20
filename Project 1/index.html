@@ -25,26 +25,19 @@
       <div class="row">
         <div class="leftcolumn">
           <div class="card">
-            <h2>Exoplanets - Star Count</h2>
+            <h2>Star Count</h2>
             <h5>Exoplanets related based on star count</h5>
             <svg id="barchartA"></svg>
             <div id="tooltip"></div>
             </div>
           <div class="card">
-            <h2>Exoplanets - Planet Count</h2>
+            <h2>Planet Count</h2>
             <h5>Exoplanets related based on planet count</h5>
             <svg id="barchartB"></svg>
             <div id="tooltip"></div>
             </div>
-          
-          <div class="card">
-            <h2>Exoplanets - Radius vs Mass </h2>
-            <h5>Exoplanets relationship between radius & mass</h5>
-            <svg id="scatterplotA"></svg>
-            <div id="tooltip"></div>
-          </div>
-          <div class="card" style="width:880px">
-            <h2>Exoplanets - Discovery Method</h2>
+          <div class="card" style="width:1200px">
+            <h2>Discovery Method</h2>
             <h5>Exoplanets related based on Discovery Method</h5>
             <svg id="barchartD"></svg>
             <div id="tooltip"></div>
@@ -52,34 +45,57 @@
         </div>
         <div class="middlecolumn">
           <div class="card">
-            <h2>Exoplanets - Habitable vs. Unhabitable</h2>
-            <h5>Exoplanets within a habitable zone cs outside habitable zone</h5>
-            <svg id="barchartE"></svg>
-            <div id="tooltip"></div>
-          </div>
-          <div class="card">
-            <h2>Exoplanets - Distance</h2>
-            <h5>Exoplanets distributed by distance to Earth</h5>
-            <svg id="histogramA"></svg>
-          </div>
-          
-        </div>
-        <div class="rightcolumn">
-          <div class="card">
-            <h2>Exoplanets - Discoveries over Time</h2>
-            <h5>Exoplanets discoveries by year</h5>
-            <div>
-              Start year: <input type="number" value="1995" min="1995" max="2023" id="start-year-input">
-            </div>
-            <svg id="linechartA"></svg>
-            <div id="tooltipa"></div>
-          </div>
-          <div class="card">
-            <h2>Exoplanets - Star Types</h2>
+            <h2>Star Types</h2>
             <h5>Exoplanets orbit Star Types</h5>
             <svg id="barchartC"></svg>
             <div id="tooltip"></div>
-            </div> 
+          </div>
+          <div class="card">
+            <h2>Habitable vs. Unhabitable</h2>
+            <h5>Exoplanets within a habitable vs outside habitable zone</h5>
+            <svg id="barchartE"></svg>
+            <div id="tooltip"></div>
+          </div>
+        </div>
+        <div class="rightcolumn">
+          <div class="card" style="width:550px">
+            <h2>Table</h2>
+            <h5>Deeper dive on the data in the scatterplot</h5>
+            <!-- <svg id="datatable"></svg> -->
+            <table id="datatable">
+              <tr>
+                <th>Planet Name</th>
+                <th>Discovery Year</th>
+                <th>Spectral Type</th>
+                <th>Distance</th>
+                <th>Facility</th>
+              </tr>
+              <tr id="datarow">
+                <td >Hover Below!</td>
+                <td >Hover Below!</td>
+                <td >Hover Below!</td>
+                <td >Hover Below!</th>
+                <td >Hover Below!</td>
+              </tr>
+            </table>
+          </div>
+          <div class="card">
+            <h2>Radius vs Mass </h2>
+            <h5>Exoplanets relationship between radius & mass</h5>
+            <svg id="scatterplotA"></svg>
+            <div id="tooltip"></div>
+          </div>
+          <div class="card">
+            <h2>Distance</h2>
+            <h5>Exoplanets distributed by distance to Earth</h5>
+            <svg id="histogramA"></svg>
+          </div>
+          <div class="card">
+            <h2>Discoveries over Time</h2>
+            <h5>Exoplanets discoveries by year</h5>
+            <svg id="linechartA"></svg>
+            <div id="tooltip"></div>
+          </div>
         </div>
       </div>
 
@@ -92,6 +108,8 @@
     <script src="js/histogram.js"></script>
     <script src="js/linechart.js"></script>
     <script src="js/scatterplot.js"></script>
+    <script src="js/rangedBarChart.js"></script>
+    <script src="js/DataTable.js"></script>
 
 </body>
 </html>

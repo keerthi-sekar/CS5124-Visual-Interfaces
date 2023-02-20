@@ -118,8 +118,9 @@
     background-color: #eee;
   }
 
-  table, th, td {
+  table, td, th {
     border: 1px solid;
+    padding: 1px 4px;
   }
   
   #sorting:hover, #sorting:focus {

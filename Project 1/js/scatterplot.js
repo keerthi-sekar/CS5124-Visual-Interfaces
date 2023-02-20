@@ -8,7 +8,7 @@ class Scatterplot {
     constructor(_config, _data) {
       this.config = {
         parentElement: _config.parentElement,
-        containerWidth: _config.containerWidth || 400,
+        containerWidth: _config.containerWidth || 480,
         containerHeight: _config.containerHeight || 250,
         margin: _config.margin || {top: 15, right: 15, bottom: 50, left: 50},
         tooltipPadding: _config.tooltipPadding || 10
@@ -119,8 +119,25 @@ class Scatterplot {
           .style('left', (event.pageX + vis.config.tooltipPadding) + 'px')   
           .style('top', (event.pageY + vis.config.tooltipPadding) + 'px')
           .html(`
-            <div class="tooltip-title">${d.hostname} - ${d.disc_year}</div>
-            <div><i>Radius ${d.pl_rade}, Mass ${d.pl_bmasse}</i></div>
+            <div class="tooltip-title">${d.hostname}</div>
+            <div><i>Radius ${Math.round(100*d.pl_rade)/100}, Mass ${Math.round(100*d.pl_bmasse)/100}</i></div>
+          `);
+        d3.select('#datatable')
+          .html(`
+            <tr>
+              <th>Planet Name</th>
+              <th>Discovery Year</th>
+              <th>Spectral Type</th>
+              <th>Distance</th>
+              <th>Facility</th>
+            </tr>
+            <tr id="datarow">
+              <td>${d.pl_name}</td>
+              <td>${d.disc_year}</td>
+              <td>${d.st_spectype}</th>
+              <td>${Math.round(d.sy_dist)/100}</td>
+              <td>${d.disc_facility}</td>
+            </tr>
           `);
       })
       .on('mouseleave', () => {
