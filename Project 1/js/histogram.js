@@ -28,8 +28,12 @@ class Histogram {
       vis.height = vis.config.containerHeight - vis.config.margin.top - vis.config.margin.bottom;
       
       vis.xScale = d3.scaleLinear()
-          .domain([0, 1000])     // can use this instead of 1000 to have the max of data: d3.max(data, function(d) { return +d.price })
+          .domain([0, 10000])     // can use this instead of 1000 to have the max of data: d3.max(data, function(d) { return +d.price })
           .range([0, vis.width]);
+
+      vis.xAxis = d3.axisBottom(vis.xScale)
+        .ticks(data)
+        .tickSizeOuter(0);
 
       vis.xAxisG = vis.chart.append('g')
           .attr('class', 'axis x-axis')
@@ -40,21 +44,25 @@ class Histogram {
           .attr('height', vis.config.containerHeight);
 
       // set the parameters for the histogram
-      const histogram = d3.histogram()
+      vis.histogram = d3.histogram()
           .value(function(d) { return d.price; })   // I need to give the vector of value
           .domain(vis.xScale.domain())  // then the domain of the graphic
           .thresholds(vis.xScale.ticks(70)); // then the numbers of bins
 
       // And apply this function to data to get the bins
-      const bins = histogram(data);
+      vis.bins = histogram(data);
 
       // Y axis: scale and draw:
       vis.yScale = d3.scaleLinear()
           .range([height, 0]);
           vis.yScale.domain([0, d3.max(bins, function(d) { return d.sy_pnum; })]);   // d3.hist has to be called before the Y axis obviously
       
+      vis.yAxis = d3.axisLeft(vis.yScale)
+          .ticks(5)
+          .tickSizeOuter(0)
+  
       vis.chart = vis.svg.append("g")
-          .call(d3.axisLeft(vis.yScale));
+      .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top})`);
 
       // Append y-axis group 
       vis.yAxisG = vis.chart.append('g')
