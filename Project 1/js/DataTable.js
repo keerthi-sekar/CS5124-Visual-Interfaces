@@ -2,7 +2,7 @@ function tabulate(data, columns) {
 	console.log("tabulate");
     var table = d3.select("SourceData").append("table")
             //.attr("style", "margin-left: 250px"),
-        thead = table.append("thead"),
+        thead = table.append("thead");
         tbody = table.append("tbody");
 
     // append the header row
