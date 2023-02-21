@@ -122,6 +122,9 @@
     border: 1px solid;
     padding: 1px 4px;
   }
+
+  table tbody { height:300px; overflow-y:scroll; display:block; }
+  table thead { display:block; background: #95a2ff; }
   
   #sorting:hover, #sorting:focus {
     text-decoration: none;

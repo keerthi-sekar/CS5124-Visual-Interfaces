@@ -122,7 +122,7 @@ class Scatterplot {
             <div class="tooltip-title">${d.hostname}</div>
             <div><i>Radius ${Math.round(100*d.pl_rade)/100}, Mass ${Math.round(100*d.pl_bmasse)/100}</i></div>
           `);
-        d3.select('#datatable')
+        /* d3.select('#datatable')
           .html(`
             <tr>
               <th>Planet Name</th>
@@ -138,7 +138,7 @@ class Scatterplot {
               <td>${Math.round(d.sy_dist)/100}</td>
               <td>${d.disc_facility}</td>
             </tr>
-          `);
+          `); */
       })
       .on('mouseleave', () => {
         d3.select('#tooltip').style('display', 'none');

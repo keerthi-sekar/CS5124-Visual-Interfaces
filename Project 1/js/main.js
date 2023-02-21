@@ -25,7 +25,7 @@ d3.csv('data/cleaned-exoplanets.csv', d3.autoType)
 			d.disc_facility = d.disc_facility;
 		});
 		console.log(data);
-
+		
 		//data = data.sort(function (a,b) {return d3.ascending(a.discoverymethod, b.discoverymethod);});
 		data = data.sort(function (a,b) {return d3.ascending(a.sy_snum, b.sy_snum);});
 		data = data.sort(function (a,b) {return d3.ascending(a.sy_pnum, b.sy_pnum);});
@@ -70,12 +70,12 @@ d3.csv('data/cleaned-exoplanets.csv', d3.autoType)
 
 		barchartD.updateVis();
 
-		barchartE = new RangedBarChart({
+		/* barchartE = new RangedBarChart({
 			parentElement: '#barchartE',
 			xAxisTitle: 'Star Types'
 		  }, data, stype_map);
 
-		barchartE.updateVis();
+		barchartE.updateVis(); */
 
 		scatterplotA = new Scatterplot({
 			parentElement: '#scatterplotA',
@@ -90,11 +90,11 @@ d3.csv('data/cleaned-exoplanets.csv', d3.autoType)
 
 		linechartA.updateVis();
 
-		/* histogramA = new Histogram({
+		histogramA = new Histogram({
 			parentElement: '#histogramA',
-		  }, data);
+		  }, data, dist_map);
 
-		histogramA.updateVis(); */
+		histogramA.updateVis();
 
 	})
 	.catch(error => console.error(error));
@@ -115,42 +115,6 @@ d3.select('#start-year-input').on('change', function() {
 	linechartA.data = filteredData;
 	linechartA.updateVis();
 });
-
-function tabulate(data, columns) {
-	console.log("tabulate");
-    var table = d3.select("datatable").append("table")
-            //.attr("style", "margin-left: 250px"),
-        thead = table.append("thead"),
-        tbody = table.append("tbody");
-
-    // append the header row
-    thead.append("tr")
-        .selectAll("th")
-        .data(columns)
-        .enter()
-        .append("th")
-            .text(function(column) { return column; });
-
-    // create a row for each object in the data
-    var rows = tbody.selectAll("tr")
-        .data(data)
-        .enter()
-        .append("tr");
-
-    // create a cell in each row for each column
-    var cells = rows.selectAll("td")
-        .data(function(row) {
-            return columns.map(function(column) {
-                return {column: column, value: row[column]};
-            });
-        })
-        .enter()
-        .append("td")
-        .attr("style", "font-family: Courier")
-            .html(function(d) { return d.value; });
-    
-    return table;
-}
 
 function GenerateTable() {
 	var filename = 'clean-exoplanets.csv';

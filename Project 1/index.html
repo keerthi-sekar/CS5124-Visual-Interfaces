@@ -60,16 +60,8 @@
         <div class="rightcolumn">
           <div class="card" style="width:550px">
             <h2>Table</h2>
-            <h5>Deeper dive on the data in the scatterplot</h5>
             <!-- <svg id="datatable"></svg> -->
-            
-          </div>
-          <div class="card">
-            <h2>Radius vs Mass </h2>
-            <h5>Exoplanets relationship between radius & mass</h5>
-            <svg id="scatterplotA"></svg>
-            <div id="tooltip"></div>
-            <table id="datatable">
+            <table id="SourceData">
               <tr>
                 <th>Planet Name</th>
                 <th>Discovery Year</th>
@@ -77,19 +69,26 @@
                 <th>Distance</th>
                 <th>Facility</th>
               </tr>
-              <tr id="datarow">
+              <tr>
                 <td >Hover Below!</td>
                 <td >Hover Below!</td>
                 <td >Hover Below!</td>
                 <td >Hover Below!</th>
                 <td >Hover Below!</td>
               </tr>
-            </table>
+              </table>
+          </div>
+          <div class="card">
+            <h2>Radius vs Mass </h2>
+            <h5>Exoplanets relationship between radius & mass</h5>
+            <svg id="scatterplotA"></svg>
+            <div id="tooltip"></div>
           </div>
           <div class="card">
             <h2>Distance</h2>
             <h5>Exoplanets distributed by distance to Earth</h5>
             <svg id="histogramA"></svg>
+            <div id="tooltip"></div>
           </div>
           <div class="card">
             <h2>Discoveries over Time</h2>

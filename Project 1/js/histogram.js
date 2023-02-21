@@ -23,63 +23,43 @@ class Histogram {
      */
     initVis() {
       let vis = this;
-  
-      // Calculate inner chart size. Margin specifies the space around the actual chart.
-      vis.width = vis.config.containerWidth - vis.config.margin.left - vis.config.margin.right;
-      vis.height = vis.config.containerHeight - vis.config.margin.top - vis.config.margin.bottom;
-      
-      vis.xScale = d3.scaleLinear()
-          .domain([0, 10000])     // can use this instead of 1000 to have the max of data: d3.max(data, function(d) { return +d.price })
-          .range([0, vis.width]);
 
-      vis.xAxis = d3.axisBottom(vis.xScale)
-        .ticks(this.data)
-        .tickSizeOuter(0);
+        // Calculate inner chart size. Margin specifies the space around the actual chart.
+        vis.width = vis.config.containerWidth - vis.config.margin.left - vis.config.margin.right;
+        vis.height = vis.config.containerHeight - vis.config.margin.top - vis.config.margin.bottom;
 
-      vis.svg = d3.select(vis.config.parentElement)
-          .attr('width', vis.config.containerWidth)
-          .attr('height', vis.config.containerHeight);
+        vis.yScale = d3.scaleLinear()
+            .range([vis.height, 0])
 
-      // set the parameters for the histogram
-      vis.histogram = d3.histogram()
-          .value(function(d) { return d.sy_pnum; })   // I need to give the vector of value
-          .domain(vis.xScale.domain())  // then the domain of the graphic
-          .thresholds(vis.xAxis.ticks(70)); // then the numbers of bins
 
-      // And apply this function to data to get the bins
-      vis.bins = d3.histogram(this.num_map);
+        vis.xScale = d3.scaleLinear()
+            .range([0, vis.width])
+            .domain([0, 1600]).nice()
 
-      // Y axis: scale and draw:
-      vis.yScale = d3.scaleLinear()
-          .range([vis.height, 0]);
-          vis.yScale.domain([0, d3.max(vis.bins, function(d) { return d.length; })]);   // d3.hist has to be called before the Y axis obviously
-      
-      vis.yAxis = d3.axisLeft(vis.yScale)
-          .ticks(5)
-          .tickSizeOuter(0)
-  
-      vis.chart = vis.svg.append("g")
-      .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top})`);
+        vis.xAxis = d3.axisBottom(vis.xScale)
+            .tickSizeOuter(0);
 
-      vis.xAxisG = vis.chart.append('g')
-      .attr('class', 'axis x-axis')
-      .attr('transform', `translate(0,${vis.height})`);
+        vis.yAxis = d3.axisLeft(vis.yScale)
+            .tickSizeOuter(0)
+            .ticks(6)
 
-      // Append y-axis group 
-      vis.yAxisG = vis.chart.append('g')
-      .attr('class', 'axis y-axis');
+        // Define size of SVG drawing area
+        vis.svg = d3.select(vis.config.parentElement)
+            .attr('width', vis.config.containerWidth)
+            .attr('height', vis.config.containerHeight)
 
-      // append the bar rectangles to the svg element
-      vis.svg.selectAll("rect")
-          .data(vis.bins)
-          .join("rect")
-            .attr("x", 1)
-        .attr("transform", function(d) { return `translate(${x(d.x0)} , ${y(d.length)})`})
-            .attr("width", function(d) { return x(d.x1) - x(d.x0) -1})
-            .attr("height", function(d) { return vis.height - y(d.length); })
-            .style("fill", "#69b3a2")
+        // SVG Group containing the actual chart; D3 margin convention
+        vis.chart = vis.svg.append('g')
+            .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top})`);
 
-      //this.renderVis();
+        // Append empty x-axis group and move it to the bottom of the chart
+        vis.xAxisG = vis.chart.append('g')
+            .attr('class', 'axis x-axis')
+            .attr('transform', `translate(0,${vis.height})`);
+
+        // Append y-axis group 
+        vis.yAxisG = vis.chart.append('g')
+            .attr('class', 'axis y-axis');
     }
   
     /**
@@ -87,9 +67,25 @@ class Histogram {
      */
     updateVis() {
       let vis = this;
-      
-      
-      vis.renderVis();
+        // set the parameters for the histogram
+        vis.histogram = d3.histogram()
+            .value(function(d) {
+                return d.sy_dist;
+            }) 
+            .domain(vis.xScale.domain()) // then the domain of the graphic
+            .thresholds(vis.xScale.ticks(10)); // then the numbers of bins
+
+        // And apply this function to data to get the bins
+        vis.bins = vis.histogram(vis.data);
+
+        vis.yScale.domain([0, d3.max(vis.bins, function(d) {
+            return d.length;
+        })]).nice();
+
+
+
+
+        vis.renderVis();
     }
   
     /**
@@ -97,15 +93,49 @@ class Histogram {
      */
     renderVis() {
       let vis = this;
-      
-      vis.svg.selectAll("rect")
-      .data(bins)
-      .join("rect")
-        .attr("x", 1)
-    .attr("transform", function(d) { return `translate(${x(d.x0)} , ${y(d.sy_pnum)})`})
-        .attr("width", function(d) { return x(d.x1) - x(d.x0) -1})
-        .attr("height", function(d) { return height - y(d.sy_pnum); })
-        .style("fill", "#69b3a2")
-      
+
+
+
+        // append the bar rectangles to the svg element
+        let bars = vis.chart.selectAll("rect")
+            .data(vis.bins)
+            .enter()
+            .append("rect")
+            .attr("x", 1)
+            .attr("transform", function(d) {
+                return "translate(" + vis.xScale(d.x0) + "," + vis.yScale(d.length) + ")";
+            })
+            .attr("width", function(d) {
+                return vis.xScale(d.x1) - vis.xScale(d.x0) - 1;
+            })
+            .attr("height", function(d) {
+                return vis.height - vis.yScale(d.length);
+            })
+            .style("fill", "#023020")
+
+
+        // Tooltip event listeners
+        bars
+            .on('mouseover', (event, d) => {
+                d3.select('#histogramtooltip')
+                    .style('opacity', 1)
+                    // Format number with million and thousand separator
+                    .html(`<div class="tooltip-title">Range</div>${d.x0 + " - " + d.x1 + ' miles'} `);
+            })
+            .on('mousemove', (event) => {
+                d3.select('#histogramtooltip')
+                    .style('left', (event.pageX + vis.config.tooltipPadding) + 'px')
+                    .style('top', (event.pageY + vis.config.tooltipPadding) + 'px')
+            })
+            .on('mouseleave', () => {
+                d3.select('#histogramtooltip').style('opacity', 0);
+            })
+
+        vis.xAxisG
+            .call(vis.xAxis)
+
+        vis.yAxisG
+            .call(vis.yAxis);
+
     }
   }

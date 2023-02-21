@@ -1,42 +1,36 @@
-class DataTable {
+function tabulate(data, columns) {
+	console.log("tabulate");
+    var table = d3.select("SourceData").append("table")
+            //.attr("style", "margin-left: 250px"),
+        thead = table.append("thead"),
+        tbody = table.append("tbody");
 
-    /**
-     * Class constructor with basic chart configuration
-     * @param {Object}
-     * @param {Array}
-     */
-    constructor(_config, _data) {
-      // Configuration object with defaults
-      this.config = {
-        parentElement: _config.parentElement,
-        containerWidth: _config.containerWidth || 400,
-        containerHeight: _config.containerHeight || 250,
-        margin: _config.margin || {top: 10, right: 10, bottom: 40, left: 40},
-        reverseOrder: _config.reverseOrder || false,
-        tooltipPadding: _config.tooltipPadding || 15,
-      }
-      this.data = _data;
-      this.initVis();
-    }
+    // append the header row
+    thead.append("tr")
+        .selectAll("th")
+        .data(columns)
+        .enter()
+        .append("th")
+            .text(function(column) { return column; });
 
-    initVis() {
-        let vis = this;
+    // create a row for each object in the data
+    var rows = tbody.selectAll("tr")
+        .data(data)
+        .enter()
+        .append("tr");
+
+    // create a cell in each row for each column
+    var cells = rows.selectAll("td")
+        .data(function(row) {
+            return columns.map(function(column) {
+                return {column: column, value: row[column]};
+            });
+        })
+        .enter()
+        .append("td")
+        .attr("style", "font-family: Courier")
+            .html(function(d) { return d.value; });
     
-        // Calculate inner chart size. Margin specifies the space around the actual chart.
-        vis.width = vis.config.containerWidth - vis.config.margin.left - vis.config.margin.right;
-        vis.height = vis.config.containerHeight - vis.config.margin.top - vis.config.margin.bottom;
-
-        var table = d3.select(parentElement).append('table');
-
-        var tr = table.selectAll('tr')
-            .data(data).enter()
-            .append('tr');
-
-        tr.append('td').html(function(m) { return m.pl_name; });
-        tr.append('td').html(function(m) { return m.hostname; });
-        tr.append('td').html(function(m) { return m.disc_year; });
-        tr.append('td').html(function(m) { return m.discoverymethod; });
-        tr.append('td').html(function(m) { return m.pl_rade; });
-        tr.append('td').html(function(m) { return m.pl_bmasse; });
-    }
+    return table;
 }
+//tabulate(data, ['pl_name', 'disc_year', 'st_spectype', 'sy_dist', 'dist_facility'])

@@ -37,7 +37,7 @@ class RangedBarChart {
             .range([vis.height, 0]) 
     
         vis.xScale = d3.scaleBand()
-            .domain(this.num_map)
+            //.domain(this.num_map)
             .range([0, vis.width])
             .paddingInner(0.2);
     
@@ -46,7 +46,7 @@ class RangedBarChart {
             .tickSizeOuter(0);
     
         vis.yAxis = d3.axisLeft(vis.yScale)
-            .ticks(5)
+            .ticks(10)
             .tickSizeOuter(0)
     
         // Define size of SVG drawing area
@@ -58,6 +58,8 @@ class RangedBarChart {
         vis.chart = vis.svg.append('g')
             .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top})`);
             
+        vis.xScale.domain(data.map(function(d) { return d.st_spectype; }));
+        vis.yScale.domain([0, d3.max(data, function(d) { return d.sy_pnum; })]);
     
         // Append empty x-axis group and move it to the bottom of the chart
         vis.xAxisG = vis.chart.append('g')
@@ -137,7 +139,7 @@ class RangedBarChart {
             }
         }
 
-        vis.aggregatedData = Array.from(vis.num_map, ([key, count]) => ({ key, count }));
+        vis.aggregatedData = Array.from(habitable, ([key, count]) => ({ key, count }));
     
         /*const orderedKeys = ['0','1','2','3', '4'];
         vis.aggregatedData = vis.aggregatedData.sort((a,b) => {
