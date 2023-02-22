@@ -82,9 +82,6 @@ class Histogram {
             return d.length;
         })]).nice();
 
-
-
-
         vis.renderVis();
     }
   

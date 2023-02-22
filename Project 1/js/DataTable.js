@@ -1,9 +1,8 @@
 function tabulate(data, columns) {
-	console.log("tabulate");
-    var table = d3.select("SourceData").append("table")
+    var table = d3.select("#SourceData");
             //.attr("style", "margin-left: 250px"),
-        thead = table.append("thead");
-        tbody = table.append("tbody");
+    var thead = table.append("thead");
+    var tbody = table.append("tbody");
 
     // append the header row
     thead.append("tr")
@@ -28,9 +27,10 @@ function tabulate(data, columns) {
         })
         .enter()
         .append("td")
-        .attr("style", "font-family: Courier")
+        .attr("style", "font-family: Inconsolata")
             .html(function(d) { return d.value; });
     
+    console.log("tabulate");
     return table;
 }
 //tabulate(data, ['pl_name', 'disc_year', 'st_spectype', 'sy_dist', 'dist_facility'])

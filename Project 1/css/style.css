@@ -121,10 +121,11 @@
   table, td, th {
     border: 1px solid;
     padding: 1px 4px;
+    width: 120px;
   }
 
   table tbody { height:300px; overflow-y:scroll; display:block; }
-  table thead { display:block; background: #95a2ff; }
+  table thead { background: #02302090; color: #1e1e1e; display:block;}
   
   #sorting:hover, #sorting:focus {
     text-decoration: none;

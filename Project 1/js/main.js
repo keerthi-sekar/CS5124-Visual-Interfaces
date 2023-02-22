@@ -1,6 +1,8 @@
 console.log("Hello world");
 
-let barchartA, barchartB, barchartC, barchartD, barchartE, scatterplotA, linechartA, histogramA, dataTable, data;
+let barchartA, barchartB, barchartC, barchartD, barchartE, scatterplotA, linechartA, histogramA, data;
+
+let dataTable = [];
 //pl_name,hostname,sys_name,sy_snum,sy_pnum,discoverymethod,disc_year,pl_orbsmax,pl_rade,pl_bmasse,pl_orbeccen,st_spectype,st_rad,st_mass,sy_dist,disc_facility
 d3.csv('data/cleaned-exoplanets.csv', d3.autoType)
 	.then(_data => {
@@ -23,10 +25,22 @@ d3.csv('data/cleaned-exoplanets.csv', d3.autoType)
 			d.st_mass = +d.st_mass;
 			d.sy_dist = +d.sy_dist;
 			d.disc_facility = d.disc_facility;
+
+			var obj = {
+				'Planet Name': d.pl_name,
+				'Discovery Year': d.discoverymethod,
+				'Spectral Type': d.st_spectype,
+				'Distance': Math.round(100*d.sy_dist)/100,
+				'Facility': d.disc_facility
+			}
+			dataTable.push(obj);
+
 		});
 		console.log(data);
+		console.log(dataTable);
 		
-		//data = data.sort(function (a,b) {return d3.ascending(a.discoverymethod, b.discoverymethod);});
+		tabulate(dataTable, ['Planet Name', 'Discovery Year', 'Spectral Type', 'Distance', 'Facility']);
+
 		data = data.sort(function (a,b) {return d3.ascending(a.sy_snum, b.sy_snum);});
 		data = data.sort(function (a,b) {return d3.ascending(a.sy_pnum, b.sy_pnum);});
 		data = data.sort(function (a,b) {return d3.ascending(a.sy_dist, b.sy_dist);});
@@ -95,6 +109,8 @@ d3.csv('data/cleaned-exoplanets.csv', d3.autoType)
 		  }, data, dist_map);
 
 		histogramA.updateVis();
+
+		
 
 	})
 	.catch(error => console.error(error));
