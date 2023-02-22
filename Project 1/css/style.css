@@ -120,11 +120,15 @@
 
   table, td, th {
     border: 1px solid;
-    padding: 1px 4px;
-    width: 120px;
+    border-collapse: collapse;
+    width: 550px;
   }
 
-  table tbody { height:300px; overflow-y:scroll; display:block; }
+  th {
+    text-align: left;
+  }
+
+  table tbody { height:250px; overflow-y:scroll; display:block; }
   table thead { background: #02302090; color: #1e1e1e; display:block;}
   
   #sorting:hover, #sorting:focus {
