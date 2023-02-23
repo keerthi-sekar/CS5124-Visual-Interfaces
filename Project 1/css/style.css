@@ -130,6 +130,8 @@
 
   table tbody { height:250px; overflow-y:scroll; display:block; }
   table thead { background: #02302090; color: #1e1e1e; display:block;}
+
+  tr:hover {background-color: #0793628c;}
   
   #sorting:hover, #sorting:focus {
     text-decoration: none;

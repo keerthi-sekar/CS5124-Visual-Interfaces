@@ -1,5 +1,5 @@
-function tabulate(data, columns) {
-    var table = d3.select("#SourceData")
+function tabulate(parentElement, data, columns) {
+    var table = d3.select(parentElement)
         .attr("style", "margin-left: 10px");
     var thead = table.append("thead");
     var tbody = table.append("tbody");
@@ -27,10 +27,14 @@ function tabulate(data, columns) {
         })
         .enter()
         .append("td")
-        .attr("style", "font-family: Inconsolata")
-            .html(function(d) { return d.value; });
+            .html(function(d) {
+                if(d.column == "More"){
+                    return "<button type='button' class='use-address'>More</button>";
+                }
+                return d.value; 
+            })
+            .attr("style", "font-family: Inconsolata");
     
-    console.log("tabulate");
     return table;
 }
 //tabulate(data, ['pl_name', 'disc_year', 'st_spectype', 'sy_dist', 'dist_facility'])

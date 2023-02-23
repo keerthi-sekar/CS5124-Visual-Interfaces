@@ -21,29 +21,48 @@
       </div>
       
       <div class="row">
-        <div class="leftcolumn" style="width: 1300px;">
-          <div class="card">
+        <div class="leftcolumn" style="width: 50%;">
+          <div class="card" style="width:850px;">
             <h2>Exoplanet System Browser</h2>
-            <p> Learn More about the exoplanets by searching below </p>
-            <input type="file" id="file_upload" />
-            <button onclick="GenerateTable()">GenerateTable</button>  
-            <br>
-            <br>
-            <button onclick="">Search Exoplanets</button>
-            <br>
-            <br>
-            <!-- table to display the csv data -->
-            <table id="display_csv_data"></table>
+            <p> Click Row Below to learn more about exoplanet </p>
+            <table id="tabledirectory" style="width: 1800px;"></table>
+          </div>
+          <div class="card" style="width:fit-content">
+            <h2>Types of Stars </h2>
+            <p>Overview on the types of stars that surround different exoplanets</p>
+            <img src="images/types-of-stars.jpg" alt="Types of Stars" style="width:825px;height:650px;"></img>
           </div>
         </div>
- 
+
+        <div class="rightcolumn" style="width: 50%;">
+          <div class="card" style="width:900px; height: 600px;">
+            <h2>Exoplanet Information</h2>
+            <p> Below is more data on the respective exoplanet </p>
+            <div class="leftcolumn" style="width:50%">
+              <svg height="100" width="100">
+                <circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="red" />
+              </svg>
+              <div id="exoplanetdescription">
+                <h4>Planet Name</h4>
+                <h4>Discovery Year</h4>
+                <h4>Spectral Type</h4>
+                <h4>Distance</h4>
+                <h4>Facility</h4>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
+    
     <!-- D3 bundle -->
     <script src="js/d3.v6.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
     <!-- Our JS code - INCLUDING the new files-->
+    <script src="js/main.js"></script>
     <script src="js/searchLibrary.js"></script>
+    <script src="js/DataTable.js"></script>
 
 </body>
 </html>

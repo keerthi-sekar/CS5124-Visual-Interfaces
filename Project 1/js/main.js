@@ -39,7 +39,8 @@ d3.csv('data/cleaned-exoplanets.csv', d3.autoType)
 		console.log(data);
 		console.log(dataTable);
 		
-		tabulate(dataTable, ['Planet Name', 'Discovery Year', 'Spectral Type', 'Distance', 'Facility']);
+		tabulate("#SourceData", dataTable, ['Planet Name', 'Discovery Year', 'Spectral Type', 'Distance', 'Facility']);
+		tabulate("#tabledirectory", dataTable, ['Planet Name', 'Discovery Year', 'Spectral Type', 'Distance', 'Facility', 'More']);
 
 		data = data.sort(function (a,b) {return d3.ascending(a.sy_snum, b.sy_snum);});
 		data = data.sort(function (a,b) {return d3.ascending(a.sy_pnum, b.sy_pnum);});
@@ -119,6 +120,42 @@ d3.select('#sorting').on('click', d => {
 	barchartA.config.reverseOrder = true;
 	barchartA.updateVis();
 })
+
+$(".use-address").click(function() {
+    var $row = $(this).closest("tr");    // Find the row
+    var $tds = $row.find("td");
+    $.each($tds, function() {
+        alert("test"); //$(this).text()
+    });
+    
+});
+
+/* let datapoint = d3.select($('table tbody tr')).hover(function(){
+	console.log($(this).attr('id'))
+})
+	//.classed("highlight", true)
+    .on('mouseover', d => {
+        d3.select("#exoplanetdescription")
+            .style('opacity', 1)
+            // Format number with million and thousand separator
+            .html(`
+                <h4>Plant Name: ${d.pl_name}</h4>
+                <h4>Discovery Year: ${d.disc_year}</h4>
+                <h4>Spectral Type: ${d.st_spectype}</h4>
+                <h4>Distance from Earth: ${d.sy_dist}</h4>
+                <h4>Facitility Discovered: ${d.disc_facility}</h4>
+            
+            `);
+    })
+	.on('mouseleave', () => {
+		d3.select("#exoplanetdescription").html(`
+			<h4>Plant Name: </h4>
+			<h4>Discovery Year: </h4>
+			<h4>Spectral Type: </h4>
+			<h4>Distance from Earth: </h4>
+			<h4>Facitility Discovered: </h4>
+		`);
+	}) */
 
 d3.select('#start-year-input').on('change', function() {
 	// Get selected year
