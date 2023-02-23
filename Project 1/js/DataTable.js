@@ -19,9 +19,11 @@ function tabulate(parentElement, data, columns) {
         .append("tr");
 
     // create a cell in each row for each column
+    let row_data;
     var cells = rows.selectAll("td")
         .data(function(row) {
             return columns.map(function(column) {
+                row_data = row;
                 return {column: column, value: row[column]};
             });
         })
@@ -29,12 +31,13 @@ function tabulate(parentElement, data, columns) {
         .append("td")
             .html(function(d) {
                 if(d.column == "More"){
-                    return "<button type='button' class='use-address'>More</button>";
+                    return `<button type="button" class="use-address">More</button>`;
                 }
+
                 return d.value; 
             })
-            .attr("style", "font-family: Inconsolata");
-    
+            .attr("style", "font-family: Inconsolata")
+            //.attr("id", "nr");
     return table;
 }
 //tabulate(data, ['pl_name', 'disc_year', 'st_spectype', 'sy_dist', 'dist_facility'])
