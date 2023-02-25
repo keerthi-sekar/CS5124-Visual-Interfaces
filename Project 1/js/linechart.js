@@ -42,7 +42,7 @@ class LineChart {
           //.tickFormat(d3.timeFormat("%Y")); // <-- format
   
       vis.yAxis = d3.axisLeft(vis.yScale)
-          .ticks(4)
+          .ticks(10)
           .tickSizeOuter(0)
           .tickPadding(10);
   

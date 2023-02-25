@@ -31,7 +31,7 @@ function tabulate(parentElement, data, columns) {
         .append("td")
             .html(function(d) {
                 if(d.column == "More"){
-                    return `<button type="button" class="use-address">More</button>`;
+                    return `<button type="button" class="use-address" onclick="Infographic(dataTable)">More</button>`;
                 }
 
                 return d.value; 
@@ -41,3 +41,9 @@ function tabulate(parentElement, data, columns) {
     return table;
 }
 //tabulate(data, ['pl_name', 'disc_year', 'st_spectype', 'sy_dist', 'dist_facility'])
+
+function Infographic(dataTable)
+{
+    console.log(dataTable);
+    //base_table = tabulate("#tabledirectory", dataTable, ['Planet Name', 'Discovery Year', 'Spectral Type', 'Distance', 'Facility', 'More']);
+}

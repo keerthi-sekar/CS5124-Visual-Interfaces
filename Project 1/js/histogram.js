@@ -112,7 +112,7 @@ class Histogram {
 
 
         // Tooltip event listeners
-        bars
+        /* bars
             .on('mouseover', (event, d) => {
                 d3.select('#histogramtooltip')
                     .style('opacity', 1)
@@ -126,7 +126,7 @@ class Histogram {
             })
             .on('mouseleave', () => {
                 d3.select('#histogramtooltip').style('opacity', 0);
-            })
+            }) */
 
         vis.xAxisG
             .call(vis.xAxis)

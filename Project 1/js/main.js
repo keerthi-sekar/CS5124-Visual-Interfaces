@@ -3,6 +3,8 @@ console.log("Hello world");
 let barchartA, barchartB, barchartC, barchartD, barchartE, scatterplotA, linechartA, histogramA, data;
 
 let dataTable = [];
+
+let zone_map = new Map();
 //pl_name,hostname,sys_name,sy_snum,sy_pnum,discoverymethod,disc_year,pl_orbsmax,pl_rade,pl_bmasse,pl_orbeccen,st_spectype,st_rad,st_mass,sy_dist,disc_facility
 d3.csv('data/cleaned-exoplanets.csv', d3.autoType)
 	.then(_data => {
@@ -53,7 +55,8 @@ d3.csv('data/cleaned-exoplanets.csv', d3.autoType)
 		var discmethod_map = d3.rollups(data, v => v.length, d => d.discoverymethod);
 		var discoveries_map = d3.rollups(data, v => v.length, d => d.disc_year);
 		var stype_map = d3.rollups(data, v => v.length, d => d.st_spectype);
-		var spectype_groups = d3.group(data, d => d.st_spectype);
+		//var spectype_groups = d3.group(data, d => d.st_spectype);
+		zone_map = GetHabitable(data);
 
 		barchartA = new Barchart({
 			parentElement: '#barchartA',
@@ -85,13 +88,6 @@ d3.csv('data/cleaned-exoplanets.csv', d3.autoType)
 
 		barchartD.updateVis();
 
-		/* barchartE = new RangedBarChart({
-			parentElement: '#barchartE',
-			xAxisTitle: 'Star Types'
-		  }, data, stype_map);
-
-		barchartE.updateVis(); */
-
 		scatterplotA = new Scatterplot({
 			parentElement: '#scatterplotA',
 			containerHeight: 400
@@ -110,8 +106,15 @@ d3.csv('data/cleaned-exoplanets.csv', d3.autoType)
 		  }, data, dist_map);
 
 		histogramA.updateVis();
-
 		
+		console.log(zone_map);
+
+		barchartE = new Barchart({
+			parentElement: '#barchartE',
+			xAxisTitle: 'Zones'
+		  }, data, zone_map);
+
+		barchartE.updateVis(); 
 
 	})
 	.catch(error => console.error(error));
@@ -121,7 +124,7 @@ d3.select('#sorting').on('click', d => {
 	barchartA.updateVis();
 })
 
-$(".use-address").click(function() {
+/* $(".use-address").click(function() {
     var $row = $(this).closest("tr");    // Find the row
     var $tds = $row.find("td");
     $.each($tds, function() {
@@ -134,8 +137,90 @@ $(".use-address").click(function() {
 $(function DataOutput(rowArray)
 {
 	console.log("test");
-});
+}); */
 
+function GetHabitable(_data)
+{
+	var spectype_groups = d3.group(_data, d => d.st_spectype);
+	var unhab = 0;
+	var hab = 0;
+	spectype_groups.forEach((value, key) =>
+	{
+		if(key == "A")
+		{
+			value.forEach(item => {
+				if(item.pl_orbsmax >= 8.5 && item.pl_orbsmax < 12.5)
+				{
+					hab++;
+				}
+				else
+				{
+					unhab++;
+				}
+			})
+		}
+		else if(key == "F")
+		{
+			value.forEach(item => {
+				if(item.pl_orbsmax >= 1.5 && item.pl_orbsmax < 2.2)
+				{
+					hab++;
+				}
+				else
+				{
+					unhab++;
+				}
+			})
+		}
+		else if(key == "G")
+		{
+			value.forEach(item => {
+				if(item.pl_orbsmax >= 0.95 && item.pl_orbsmax < 1.4)
+				{
+					hab++;
+				}
+				else
+				{
+					unhab++;
+				}
+			})
+		}
+		else if(key == "K")
+		{
+			value.forEach(item => {
+				if(item.pl_orbsmax >= 0.38 && item.pl_orbsmax < 0.56)
+				{
+					hab++;
+				}
+				else
+				{
+					unhab++;
+				}
+			})
+		}
+		else if(key == "F")
+		{
+			value.forEach(item => {
+				if(item.pl_orbsmax >= 0.08 && item.pl_orbsmax < 0.12)
+				{
+					hab++;
+				}
+				else
+				{
+					unhab++;
+				}
+			})
+		}
+
+		const hab_map = new Map();
+
+		hab_map.set("Habitable", hab);
+		hab_map.set("Unhabitable", unhab);
+
+		return hab_map;
+	})
+
+}
 d3.select('#start-year-input').on('change', function() {
 	// Get selected year
 	const minYear = parseInt(d3.select(this).property('value'));
@@ -147,80 +232,3 @@ d3.select('#start-year-input').on('change', function() {
 	linechartA.data = filteredData;
 	linechartA.updateVis();
 });
-
-function GenerateTable() {
-	var filename = 'clean-exoplanets.csv';
-	var extension = filename.substring(filename.lastIndexOf(".")).toUpperCase();
-	if (extension == '.CSV') {
-		//Here calling another method to read CSV file into json
-		csvFileToJSON(filename);
-	}else{
-		alert("Please select a valid csv file.");
-	}
-  }
-
-function csvFileToJSON(file){
-	try {
-	  var reader = new FileReader();
-	  reader.readAsBinaryString(file);
-	  reader.onload = function(e) {
-		  var jsonData = [];
-		  var headers = [];
-		  var rows = e.target.result.split("\r\n");               
-		  for (var i = 0; i < rows.length; i++) {
-			  var cells = rows[i].split(",");
-			  var rowData = {};
-			  for(var j=0;j<cells.length;j++){
-				  if(i==0){
-					  var headerName = cells[j].trim();
-					  headers.push(headerName);
-				  }else{
-					  var key = headers[j];
-					  if(key){
-						  rowData[key] = cells[j].trim();
-					  }
-				  }
-			  }
-			   
-			  if(i!=0){
-				  jsonData.push(rowData);
-			  }
-		  }
-			
-		  //displaying the json result into HTML table
-		  displayJsonToHtmlTable(jsonData);
-		  }
-	  }catch(e){
-		  console.error(e);
-	  }
-}
-
-function displayJsonToHtmlTable(jsonData)
-{
-	console.log("populate");
-	var table=document.getElementById("display_data");
-        if(jsonData.length>0){
-            var headers = Object.keys(jsonData[0]);
-            var htmlHeader='<thead><tr>';
-             
-            for(var i=0;i<headers.length;i++){
-                htmlHeader+= '<th>'+headers[i]+'</th>';
-            }
-            htmlHeader+= '<tr></thead>';
-             
-            var htmlBody = '<tbody>';
-            for(var i=0;i<jsonData.length;i++){
-                var row=jsonData[i];
-                htmlBody+='<tr>';
-                for(var j=0;j<headers.length;j++){
-                    var key = headers[j];
-                    htmlBody+='<td>'+row[key]+'</td>';
-                }
-                htmlBody+='</tr>';
-            }
-            htmlBody+='</tbody>';
-            table.innerHTML=htmlHeader+htmlBody;
-        }else{
-            table.innerHTML='There is no data in CSV';
-        }
-}
