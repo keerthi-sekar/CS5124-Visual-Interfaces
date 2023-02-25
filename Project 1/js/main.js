@@ -55,8 +55,10 @@ d3.csv('data/cleaned-exoplanets.csv', d3.autoType)
 		var discmethod_map = d3.rollups(data, v => v.length, d => d.discoverymethod);
 		var discoveries_map = d3.rollups(data, v => v.length, d => d.disc_year);
 		var stype_map = d3.rollups(data, v => v.length, d => d.st_spectype);
-		//var spectype_groups = d3.group(data, d => d.st_spectype);
-		zone_map = GetHabitable(data);
+		var spectype_groups = d3.group(data, d => d.st_spectype);
+		
+		console.log(spectype_groups);
+		zone_map = GetHabitable(spectype_groups);
 
 		barchartA = new Barchart({
 			parentElement: '#barchartA',
@@ -139,9 +141,9 @@ $(function DataOutput(rowArray)
 	console.log("test");
 }); */
 
-function GetHabitable(_data)
+function GetHabitable(spectype_groups)
 {
-	var spectype_groups = d3.group(_data, d => d.st_spectype);
+	//var spectype_groups = d3.group(_data, d => d.st_spectype);
 	var unhab = 0;
 	var hab = 0;
 	spectype_groups.forEach((value, key) =>

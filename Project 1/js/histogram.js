@@ -112,21 +112,20 @@ class Histogram {
 
 
         // Tooltip event listeners
-        /* bars
-            .on('mouseover', (event, d) => {
-                d3.select('#histogramtooltip')
+            bars
+                .on('mouseover', (event,d) => {
+                    d3.select('#histogramtooltip')
+                    .style('display', 'block')
                     .style('opacity', 1)
-                    // Format number with million and thousand separator
-                    .html(`<div class="tooltip-title">Range</div>${d.x0 + " - " + d.x1 + ' miles'} `);
-            })
-            .on('mousemove', (event) => {
-                d3.select('#histogramtooltip')
-                    .style('left', (event.pageX + vis.config.tooltipPadding) + 'px')
+                    .style('left', (event.pageX + vis.config.tooltipPadding) + 'px')   
                     .style('top', (event.pageY + vis.config.tooltipPadding) + 'px')
-            })
-            .on('mouseleave', () => {
-                d3.select('#histogramtooltip').style('opacity', 0);
-            }) */
+                    .html(`
+                        <div class="tooltip-title">Exoplanets: ${d.length}</div>
+                    `);
+                })
+                .on('mouseleave', () => {
+                    d3.select('#histogramtooltip').style('display', 'none').style('opacity', 1);
+                });
 
         vis.xAxisG
             .call(vis.xAxis)
