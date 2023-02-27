@@ -94,10 +94,7 @@ class Scatterplot {
   
       vis.renderVis();
     }
-  
-    /**
-     * Bind data to visual elements.
-     */
+    
     renderVis() {
       let vis = this;
   

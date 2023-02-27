@@ -38,17 +38,30 @@
           <div class="card" style="width:900px; height: 600px;">
             <h2>Exoplanet Information</h2>
             <p> Below is more data on the respective exoplanet </p>
-            <div class="leftcolumn" style="width:50%">
-              <svg height="100" width="100">
-                <circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="red" />
-              </svg>
-              <div id="exoplanetdescription">
-                <h4>Planet Name</h4>
-                <h4>Discovery Year</h4>
-                <h4>Spectral Type</h4>
-                <h4>Distance</h4>
-                <h4>Facility</h4>
+            <br></br>
+            <button id="starA" onclick="SampleData('A')">Spectral A</button>
+            <button id="starF" onclick="SampleData('F')">Spectral F</button>
+            <button id="starG" onclick="SampleData('G')">Spectral G</button>
+            <br></br>
+            <svg height="100" width="100" >
+              <circle id="sVisual" cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="red" />
+            </svg>
+            <br></br>
+            <div class="leftcolumn" style="width:20%" background-color="#FFFFFF">
+              <div >
+                <h4>Planet Name: </h4>
+                <h4>Discovery Year: </h4>
+                <h4>Spectral Type: </h4>
+                <h4>Distance: </h4>
+                <h4>Facility: </h4>
               </div>
+            </div>
+            <div class="rightcolumn" style="width:50%" background-color="#FFFFFF">
+              <h4 id="planetName">Planet Name</h4>
+              <h4 id="discYear">Discovery Year</h4>
+              <h4 id="sType">Spectral Type</h4>
+              <h4 id="dist">Distance</h4>
+              <h4 id="facilityText">Facility</h4>
             </div>
           </div>
         </div>

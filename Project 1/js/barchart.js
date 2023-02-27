@@ -133,6 +133,7 @@ class Barchart {
         .attr('height', d => vis.height - vis.yScale(vis.yValue(d)))
         .attr('y', d => vis.yScale(vis.yValue(d)))
         .attr('fill', '#023020')
+
     bars
       .on('mouseover', (event,d) => {
         d3.select('#tooltip')

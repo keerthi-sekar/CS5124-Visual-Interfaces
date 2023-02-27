@@ -4,7 +4,7 @@ let barchartA, barchartB, barchartC, barchartD, barchartE, scatterplotA, linecha
 
 let dataTable = [];
 
-let zone_map = new Map();
+let zone_map;
 //pl_name,hostname,sys_name,sy_snum,sy_pnum,discoverymethod,disc_year,pl_orbsmax,pl_rade,pl_bmasse,pl_orbeccen,st_spectype,st_rad,st_mass,sy_dist,disc_facility
 d3.csv('data/cleaned-exoplanets.csv', d3.autoType)
 	.then(_data => {
@@ -57,9 +57,9 @@ d3.csv('data/cleaned-exoplanets.csv', d3.autoType)
 		var stype_map = d3.rollups(data, v => v.length, d => d.st_spectype);
 		var spectype_groups = d3.group(data, d => d.st_spectype);
 		
-		console.log(spectype_groups);
+		
 		zone_map = GetHabitable(spectype_groups);
-
+		console.log("zone", zone_map);
 		barchartA = new Barchart({
 			parentElement: '#barchartA',
 			xAxisTitle: 'Star Count'
@@ -108,12 +108,10 @@ d3.csv('data/cleaned-exoplanets.csv', d3.autoType)
 		  }, data, dist_map);
 
 		histogramA.updateVis();
-		
-		console.log(zone_map);
 
 		barchartE = new Barchart({
 			parentElement: '#barchartE',
-			xAxisTitle: 'Zones'
+			xAxisTitle: 'Zone'
 		  }, data, zone_map);
 
 		barchartE.updateVis(); 
@@ -126,20 +124,14 @@ d3.select('#sorting').on('click', d => {
 	barchartA.updateVis();
 })
 
-/* $(".use-address").click(function() {
-    var $row = $(this).closest("tr");    // Find the row
-    var $tds = $row.find("td");
-    $.each($tds, function() {
-        //console.log($(this).text());
-		console.log('test');
-    });
-    
-});
-
-$(function DataOutput(rowArray)
-{
-	console.log("test");
-}); */
+function filterData() {
+	if (difficultyFilter.length == 0) {
+	  scatterplotA.data = data;
+	} else {
+	  scatterplotA.data = data.filter(d => difficultyFilter.includes(d.difficulty));
+	}
+	scatterplotA.updateVis();
+  }
 
 function GetHabitable(spectype_groups)
 {
@@ -213,15 +205,15 @@ function GetHabitable(spectype_groups)
 				}
 			})
 		}
-
+	})
 		const hab_map = new Map();
 
 		hab_map.set("Habitable", hab);
 		hab_map.set("Unhabitable", unhab);
 
-		return hab_map;
-	})
+		console.log("hab-map", hab_map);
 
+		return hab_map;
 }
 d3.select('#start-year-input').on('change', function() {
 	// Get selected year

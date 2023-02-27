@@ -128,8 +128,13 @@
     text-align: left;
   }
 
-  table tbody { height:250px; overflow-y:scroll; display:block; }
-  table thead { background: #02302090; color: #1e1e1e; display:block;}
+  table tbody { height:250px; overflow-y:scroll; overflow-x: hidden; display:inline-block; }
+  table thead { 
+    background: #02302090; 
+    color: #1e1e1e; 
+    display:inline-block;
+    table-layout: fixed;
+  }
 
   tr:hover {background-color: #0793628c;}
   
